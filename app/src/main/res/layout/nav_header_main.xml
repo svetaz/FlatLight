@@ -29,7 +29,7 @@
         android:text="Simple Light Bulb"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="16sp"
-        />
+        android:textStyle="bold"/>
 
     <TextView
         android:layout_width="match_parent"

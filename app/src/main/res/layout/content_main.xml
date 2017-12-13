@@ -12,11 +12,37 @@
     tools:showIn="@layout/app_bar_main">
 
     <ImageView
-        android:id="@+id/bulbON"
+    android:id="@+id/bulbON"
+    android:layout_width="400dp"
+    android:layout_height="390dp"
+    android:background="@drawable/bulbon"
+    android:onClick="bulbon"
+    android:textColor="@android:color/white"
+    android:visibility="invisible"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/bulbOFF"
         android:layout_width="400dp"
         android:layout_height="390dp"
-        android:background="@drawable/penga"
-        android:onClick="bulbon"
+        android:background="@drawable/bulboff"
+        android:onClick="bulboff"
+        android:textColor="@android:color/white"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/mesecon"
+        android:layout_width="375dp"
+        android:layout_height="365dp"
+        android:background="@drawable/mesecon"
+        android:onClick="mesecon"
         android:textColor="@android:color/white"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,16 +51,20 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
-        android:id="@+id/bulbOFF"
-        android:layout_width="400dp"
-        android:layout_height="390dp"
-        android:background="@drawable/pengaoff"
-        android:onClick="bulboff"
+        android:id="@+id/mesecoff"
+        android:layout_width="375dp"
+        android:layout_height="365dp"
+        android:background="@drawable/mesecoff"
+        android:onClick="mesecoff"
         android:textColor="@android:color/white"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
+
+
+
+
 
 </android.support.constraint.ConstraintLayout>
