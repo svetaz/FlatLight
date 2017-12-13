@@ -71,6 +71,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageView bulboff = (ImageView)findViewById(R.id.bulbOFF);
         ImageView mesecon = (ImageView)findViewById(R.id.mesecon);
         ImageView mesecoff = (ImageView)findViewById(R.id.mesecoff);
+        ImageView sunon = (ImageView)findViewById(R.id.sunon);
+        ImageView sunoff = (ImageView)findViewById(R.id.sunoff);
+
+
+
 
 
         //provera podesenja
@@ -88,6 +93,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mesecon.setVisibility(View.INVISIBLE);
             mesecoff.setVisibility(View.INVISIBLE);
 
+            sunon.setVisibility(View.INVISIBLE);
+            sunoff.setVisibility(View.INVISIBLE);
+
+
+
         }
 
         if(END_POINT.matches("2")){
@@ -98,7 +108,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             bulboff.setVisibility(View.INVISIBLE);
             bulbon.setVisibility(View.INVISIBLE);
 
+            sunon.setVisibility(View.INVISIBLE);
+            sunoff.setVisibility(View.INVISIBLE);
+
+
+
         }
+
+        if(END_POINT.matches("3")){
+
+            sunon.setVisibility(View.INVISIBLE);
+            sunoff.setVisibility(View.VISIBLE);
+
+            bulboff.setVisibility(View.INVISIBLE);
+            bulbon.setVisibility(View.INVISIBLE);
+
+            mesecon.setVisibility(View.INVISIBLE);
+            mesecoff.setVisibility(View.INVISIBLE);
+
+
+
+        }
+
+
 
 
 
@@ -129,6 +161,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(mesecon);
         }
+
+        if (auto&&END_POINT.matches("3")){
+
+            upali();
+
+            sunoff.setVisibility(View.INVISIBLE);
+            sunon.setVisibility(View.VISIBLE);
+
+            ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+            lLayout.setBackgroundColor(Color.parseColor("#303030"));
+            //lLayout.setBackgroundResource(R.drawable.nocka);
+
+            Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(mesecon);
+        }
+
+
     }
 
 
@@ -206,92 +254,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-//SIJALICA
-
-    public void bulboff(View view) {
-
-        //provera podesenja
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
-        boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
-
-        if (sound){
-
-        MediaPlayer mp;
-        mp = MediaPlayer.create(MainActivity.this, R.raw.clicky);
-        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                // TODO Auto-generated method stub
-                mp.reset();
-                mp.release();
-                mp = null;
-            }
-
-        });
-        mp.start();}
-
-       upali();
-
-        ImageView bulbon = (ImageView)findViewById(R.id.bulbON);
-        ImageView bulboff = (ImageView)findViewById(R.id.bulbOFF);
-
-        bulboff.setVisibility(View.INVISIBLE);
-        bulbon.setVisibility(View.VISIBLE);
-
-        ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-        lLayout.setBackgroundColor(Color.parseColor("#303030"));
-        //lLayout.setBackgroundResource(R.drawable.nocka);
-
-        Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulbon);
-
-    }
-
-    public void bulbon(View view) {
-
-        //provera podesenja
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
-        boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
-
-
-        if (sound){
-
-        MediaPlayer mp;
-        mp = MediaPlayer.create(MainActivity.this, R.raw.clicky);
-        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                // TODO Auto-generated method stub
-                mp.reset();
-                mp.release();
-                mp = null;
-            }
-
-        });
-        mp.start(); }
-
-        ugasi();
-
-        ImageView bulbon = (ImageView)findViewById(R.id.bulbON);
-        ImageView bulboff = (ImageView)findViewById(R.id.bulbOFF);
-        bulboff.setVisibility(View.VISIBLE);
-        bulbon.setVisibility(View.INVISIBLE);
-
-        ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-        lLayout.setBackgroundColor(Color.parseColor("#161616"));
-
-        Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulboff);
 
 
 
 
-
-    }
-
-    
     //ON RESUME
     @Override
     public void onResume () {
@@ -302,6 +268,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageView bulboff = (ImageView)findViewById(R.id.bulbOFF);
         ImageView mesecon = (ImageView)findViewById(R.id.mesecon);
         ImageView mesecoff = (ImageView)findViewById(R.id.mesecoff);
+        ImageView sunon = (ImageView)findViewById(R.id.sunon);
+        ImageView sunoff = (ImageView)findViewById(R.id.sunoff);
+
 
         if (bulboff.getVisibility()==View.VISIBLE){
         Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulboff);}
@@ -315,11 +284,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else if (mesecon.getVisibility()==View.VISIBLE){
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(mesecon);}
 
+        else if (sunoff.getVisibility()==View.VISIBLE){
+            Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(sunoff);}
+
+        else if (sunon.getVisibility()==View.VISIBLE){
+            Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(sunon);}
+
+
+
 
     }
 
 
-//METODE ZA PALJENJE I GASENJE BLICA
+    //METODE ZA PALJENJE I GASENJE BLICA
     public void upali (){
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -351,6 +328,93 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     }
+
+    //SIJALICA
+
+    public void bulboff(View view) {
+
+        //provera podesenja
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
+        boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
+
+        if (sound){
+
+            MediaPlayer mp;
+            mp = MediaPlayer.create(MainActivity.this, R.raw.clicky);
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    // TODO Auto-generated method stub
+                    mp.reset();
+                    mp.release();
+                    mp = null;
+                }
+
+            });
+            mp.start();}
+
+        upali();
+
+        ImageView bulbon = (ImageView)findViewById(R.id.bulbON);
+        ImageView bulboff = (ImageView)findViewById(R.id.bulbOFF);
+
+        bulboff.setVisibility(View.INVISIBLE);
+        bulbon.setVisibility(View.VISIBLE);
+
+        ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+        lLayout.setBackgroundColor(Color.parseColor("#303030"));
+        //lLayout.setBackgroundResource(R.drawable.nocka);
+
+        Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulbon);
+
+    }
+
+    public void bulbon(View view) {
+
+        //provera podesenja
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
+        boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
+
+
+        if (sound){
+
+            MediaPlayer mp;
+            mp = MediaPlayer.create(MainActivity.this, R.raw.clicky);
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    // TODO Auto-generated method stub
+                    mp.reset();
+                    mp.release();
+                    mp = null;
+                }
+
+            });
+            mp.start(); }
+
+        ugasi();
+
+        ImageView bulbon = (ImageView)findViewById(R.id.bulbON);
+        ImageView bulboff = (ImageView)findViewById(R.id.bulbOFF);
+        bulboff.setVisibility(View.VISIBLE);
+        bulbon.setVisibility(View.INVISIBLE);
+
+        ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+        lLayout.setBackgroundColor(Color.parseColor("#161616"));
+
+        Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulboff);
+
+
+
+
+
+    }
+
+    //MESEC
 
     public void mesecon(View view) {
 
@@ -387,7 +451,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
         lLayout.setBackgroundColor(Color.parseColor("#161616"));
 
-        Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(mesecoff);
+        Technique.WAVE.getComposer().duration(650).delay(0).playOn(mesecoff);
 
     }
 
@@ -427,7 +491,92 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         lLayout.setBackgroundColor(Color.parseColor("#303030"));
         //lLayout.setBackgroundResource(R.drawable.nocka);
 
-        Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(mesecon);
+        Technique.WAVE.getComposer().duration(650).delay(0).playOn(mesecon);
 
     }
+
+    //SUNCE
+
+    public void sunon(View view) {
+
+        //provera podesenja
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
+        boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
+
+
+        if (sound){
+
+            MediaPlayer mp;
+            mp = MediaPlayer.create(MainActivity.this, R.raw.sun);
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    // TODO Auto-generated method stub
+                    mp.reset();
+                    mp.release();
+                    mp = null;
+                }
+
+            });
+            mp.start(); }
+
+        ugasi();
+
+        ImageView sunon = (ImageView)findViewById(R.id.sunon);
+        ImageView sunoff = (ImageView)findViewById(R.id.sunoff);
+        sunoff.setVisibility(View.VISIBLE);
+        sunon.setVisibility(View.INVISIBLE);
+
+        ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+        lLayout.setBackgroundColor(Color.parseColor("#161616"));
+
+        Technique.ROTATE.getComposer().duration(650).delay(0).playOn(sunoff);
+
+    }
+
+    public void sunoff(View view) {
+
+        //provera podesenja
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
+        boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
+
+        if (sound){
+
+            MediaPlayer mp;
+            mp = MediaPlayer.create(MainActivity.this, R.raw.sun);
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    // TODO Auto-generated method stub
+                    mp.reset();
+                    mp.release();
+                    mp = null;
+                }
+
+            });
+            mp.start();}
+
+        upali();
+
+        ImageView sunon = (ImageView)findViewById(R.id.sunon);
+        ImageView sunoff = (ImageView)findViewById(R.id.sunoff);
+
+        sunoff.setVisibility(View.INVISIBLE);
+        sunon.setVisibility(View.VISIBLE);
+
+        ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+        lLayout.setBackgroundColor(Color.parseColor("#303030"));
+        //lLayout.setBackgroundResource(R.drawable.nocka);
+
+        Technique.ROTATE.getComposer().duration(650).delay(0).playOn(sunon);
+
+    }
+
+
+
+
 }
