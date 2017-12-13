@@ -4,30 +4,41 @@
       tools:showIn="navigation_view"
     >
 
-    <group android:checkableBehavior="single">
-
-
+    <group
+        android:id="@+id/grupa1">
 
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_settings_black_24dp"
-            android:title="Settings"/>
+            android:id="@+id/nav_send"
+            android:icon="@drawable/ic_info_black_24dp"
+            android:title="About"/>
+
+        <item
+            android:id="@+id/nav_donate"
+            android:icon="@drawable/ic_monetization_on_black_24dp"
+            android:title="Donate"/>
+
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@drawable/ic_thumb_up_black_24dp"
+            android:title="Share this app"/>
+
+
     </group>
 
 
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share this app"/>
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_info_black_24dp"
-                android:title="About"/>
 
-    <item
-        android:id="@+id/nav_donate"
-        android:icon="@drawable/ic_monetization_on_black_24dp"
-        android:title="Donate"/>
+    <group
+        android:id="@+id/grupa2">
+
+
+            <item
+                android:id="@+id/nav_manage"
+                android:icon="@drawable/ic_settings_black_24dp"
+                android:title="Settings"/>
+
+    </group>
+
+
 
 
 

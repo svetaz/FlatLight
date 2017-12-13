@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Simple Light Bulb</string>
+    <string name="app_name">Simple Flashlight</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
