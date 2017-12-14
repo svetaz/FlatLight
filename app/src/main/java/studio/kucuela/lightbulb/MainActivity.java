@@ -13,6 +13,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
@@ -56,8 +57,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SharedPreferences prefs;
 
     public static String NOTIF_AUTO = "notif_auto";
-
     public static String NOTIF_SOUND = "notif_sound";
+    public static String NOTIF_STROBE = "notif_strobe";
+    final Handler handler = new Handler();
+    Handler handler2 = new Handler();
+
+    final Handler handler3 = new Handler();
+    Handler handler4 = new Handler();
+
+    final Handler handler5 = new Handler();
+    Handler handler6 = new Handler();
+    
+    
 
 
 
@@ -70,7 +81,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         ugasi();
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -86,16 +99,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageView mesecoff = (ImageView) findViewById(R.id.mesecoff);
         ImageView sunon = (ImageView) findViewById(R.id.sunon);
         ImageView sunoff = (ImageView) findViewById(R.id.sunoff);
+        TextView strobetext = (TextView)findViewById(R.id.textStrobe);
+
 
 
 
 
         //provera podesenja
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
         boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
         boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
+        boolean strobe = prefs.getBoolean(NOTIF_STROBE, false);
         String END_POINT = prefs.getString("PREF_LIST", "1");
-        //if (END_POINT.matches("3")){
+
+
+        if (strobe==true) {
+
+            strobetext.setVisibility(View.VISIBLE);
+        }
 
         if (END_POINT.matches("1")) {
 
@@ -187,6 +209,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(mesecon);
         }
 
+        if (auto && END_POINT.matches("3")&&strobe) {
+
+            strobe();
+
+            sunoff.setVisibility(View.INVISIBLE);
+            sunon.setVisibility(View.VISIBLE);
+
+            ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+            lLayout.setBackgroundColor(Color.parseColor("#303030"));
+            //lLayout.setBackgroundResource(R.drawable.nocka);
+
+            Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(sunon);
+        }
+
+        if (auto && END_POINT.matches("2")&&strobe) {
+
+            strobe();
+
+            mesecoff.setVisibility(View.INVISIBLE);
+            mesecon.setVisibility(View.VISIBLE);
+
+            ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+            lLayout.setBackgroundColor(Color.parseColor("#303030"));
+            //lLayout.setBackgroundResource(R.drawable.nocka);
+
+            Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(mesecon);
+        }
+
+        if (auto && END_POINT.matches("1")&&strobe) {
+
+            strobe();
+
+            bulboff.setVisibility(View.INVISIBLE);
+            bulbon.setVisibility(View.VISIBLE);
+
+            ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+            lLayout.setBackgroundColor(Color.parseColor("#303030"));
+            //lLayout.setBackgroundResource(R.drawable.nocka);
+
+            Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulbon);
+        }
+
+
 
     }
 
@@ -203,9 +268,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
 
             ugasi();
+            strobeoff();
+
 
         }
     }
+
+    @Override
+    public void onDestroy() {
+
+
+            super.onDestroy();
+
+            ugasi();
+            strobeoff();
+
+    }
+
+
+
 
 
 
@@ -293,11 +374,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
+
+
     }
 
 
     //METODE ZA PALJENJE I GASENJE BLICA
     public void upali() {
+
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             CameraManager camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
@@ -329,6 +414,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    public void strobe () {
+
+
+
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                ugasi();
+
+            }
+        }, 650);
+
+
+
+        handler2.postDelayed(new Runnable() {
+            public void run() {
+                upali();
+                strobe();
+
+            }
+        }, 1000);
+
+    }
+
+    public void strobeoff (){
+
+        handler.removeMessages(0);
+        handler2.removeMessages(0);
+    }
+
+
+
     //SIJALICA
 
     public void bulboff(View view) {
@@ -356,7 +472,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mp.start();
         }
 
-        upali();
+        //provera podesenja
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean strobe = prefs.getBoolean(NOTIF_STROBE, false);
+
+
+        if (strobe) {
+
+            strobe();
+
+        }
+        if (strobe==false) {
+
+            upali();
+
+        }
 
         ImageView bulbon = (ImageView) findViewById(R.id.bulbON);
         ImageView bulboff = (ImageView) findViewById(R.id.bulbOFF);
@@ -378,6 +508,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
         boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
+        boolean strobe = prefs.getBoolean(NOTIF_STROBE, false);
 
 
         if (sound) {
@@ -398,7 +529,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mp.start();
         }
 
-        ugasi();
+        if (strobe) {
+
+            strobeoff();
+            ugasi();
+            //Toast.makeText(this,"T",Toast.LENGTH_SHORT).show();
+        }
+        if (strobe==false) {
+
+            strobeoff();
+            ugasi();
+
+        }
 
         ImageView bulbon = (ImageView) findViewById(R.id.bulbON);
         ImageView bulboff = (ImageView) findViewById(R.id.bulbOFF);
@@ -424,6 +566,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
         boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
         String END_SOUNDS = prefs.getString("PREF_LIST_SOUNDS", "1");
+        boolean strobe = prefs.getBoolean(NOTIF_STROBE, false);
         //if (END_SOUNDS.matches("3")){
 
 
@@ -464,7 +607,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
 
-        ugasi();
+        if (strobe) {
+
+            strobeoff();
+            ugasi();
+            //Toast.makeText(this,"T",Toast.LENGTH_SHORT).show();
+        }
+        if (strobe==false) {
+
+            strobeoff();
+            ugasi();
+
+        }
 
         ImageView mesecon = (ImageView) findViewById(R.id.mesecon);
         ImageView mesecoff = (ImageView) findViewById(R.id.mesecoff);
@@ -525,7 +679,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
 
-        upali();
+        //provera podesenja
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean strobe = prefs.getBoolean(NOTIF_STROBE, false);
+
+
+        if (strobe) {
+
+            strobe();
+
+        }
+        if (strobe==false) {
+
+            upali();
+
+        }
 
         ImageView mesecon = (ImageView) findViewById(R.id.mesecon);
         ImageView mesecoff = (ImageView) findViewById(R.id.mesecoff);
@@ -550,6 +718,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
         boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
         String END_SOUNDS = prefs.getString("PREF_LIST_SOUNDS", "1");
+        boolean strobe = prefs.getBoolean(NOTIF_STROBE, false);
         //if (END_SOUNDS.matches("3")){
 
 
@@ -590,7 +759,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
 
-        ugasi();
+
+        if (strobe) {
+
+           strobeoff();
+            ugasi();
+            //Toast.makeText(this,"T",Toast.LENGTH_SHORT).show();
+        }
+        if (strobe==false) {
+
+            strobeoff();
+            ugasi();
+
+        }
 
         ImageView sunon = (ImageView) findViewById(R.id.sunon);
         ImageView sunoff = (ImageView) findViewById(R.id.sunoff);
@@ -650,7 +831,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mp.start();
 
         }
-        upali();
+
+        //provera podesenja
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean strobe = prefs.getBoolean(NOTIF_STROBE, false);
+
+
+        if (strobe) {
+
+            strobe();
+
+        }
+        if (strobe==false) {
+
+            upali();
+
+        }
+
+
+
+
 
         ImageView sunon = (ImageView) findViewById(R.id.sunon);
         ImageView sunoff = (ImageView) findViewById(R.id.sunoff);
@@ -662,7 +862,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         lLayout.setBackgroundColor(Color.parseColor("#303030"));
         //lLayout.setBackgroundResource(R.drawable.nocka);
 
-        Technique.ROTATE.getComposer().duration(650).delay(0).playOn(sunon);
+
+
+            Technique.ROTATE.getComposer().duration(650).delay(0).playOn(sunon);
+
+
+
 
     }
 
