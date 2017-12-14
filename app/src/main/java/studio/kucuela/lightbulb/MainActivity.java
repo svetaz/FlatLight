@@ -423,9 +423,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
         boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
+        String END_SOUNDS = prefs.getString("PREF_LIST_SOUNDS", "1");
+        //if (END_SOUNDS.matches("3")){
 
 
-        if (sound) {
+        if (sound&&END_SOUNDS.matches("1")) {
 
             MediaPlayer mp;
             mp = MediaPlayer.create(MainActivity.this, R.raw.moon);
@@ -441,6 +443,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             });
             mp.start();
+        }
+
+        if (sound&&END_SOUNDS.matches("2")) {
+
+            MediaPlayer mp;
+            mp = MediaPlayer.create(MainActivity.this, R.raw.clicky);
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    // TODO Auto-generated method stub
+                    mp.reset();
+                    mp.release();
+                    mp = null;
+                }
+
+            });
+            mp.start();
+
         }
 
         ugasi();
@@ -463,8 +484,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
         boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
+        String END_SOUNDS = prefs.getString("PREF_LIST_SOUNDS", "1");
+        //if (END_SOUNDS.matches("3")){
 
-        if (sound) {
+
+        if (sound&&END_SOUNDS.matches("1")) {
 
             MediaPlayer mp;
             mp = MediaPlayer.create(MainActivity.this, R.raw.moon);
@@ -480,6 +504,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             });
             mp.start();
+        }
+
+        if (sound&&END_SOUNDS.matches("2")) {
+
+            MediaPlayer mp;
+            mp = MediaPlayer.create(MainActivity.this, R.raw.clicky);
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    // TODO Auto-generated method stub
+                    mp.reset();
+                    mp.release();
+                    mp = null;
+                }
+
+            });
+            mp.start();
+
         }
 
         upali();
@@ -506,9 +549,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
         boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
+        String END_SOUNDS = prefs.getString("PREF_LIST_SOUNDS", "1");
+        //if (END_SOUNDS.matches("3")){
 
 
-        if (sound) {
+        if (sound&&END_SOUNDS.matches("1")) {
 
             MediaPlayer mp;
             mp = MediaPlayer.create(MainActivity.this, R.raw.sun);
@@ -524,6 +569,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             });
             mp.start();
+        }
+
+        if (sound&&END_SOUNDS.matches("2")) {
+
+            MediaPlayer mp;
+            mp = MediaPlayer.create(MainActivity.this, R.raw.clicky);
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    // TODO Auto-generated method stub
+                    mp.reset();
+                    mp.release();
+                    mp = null;
+                }
+
+            });
+            mp.start();
+
         }
 
         ugasi();
@@ -546,8 +610,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
         boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
+        String END_SOUNDS = prefs.getString("PREF_LIST_SOUNDS", "1");
+        //if (END_SOUNDS.matches("3")){
 
-        if (sound) {
+
+        if (sound&&END_SOUNDS.matches("1")) {
 
             MediaPlayer mp;
             mp = MediaPlayer.create(MainActivity.this, R.raw.sun);
@@ -565,6 +632,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mp.start();
         }
 
+        if (sound&&END_SOUNDS.matches("2")) {
+
+            MediaPlayer mp;
+            mp = MediaPlayer.create(MainActivity.this, R.raw.clicky);
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    // TODO Auto-generated method stub
+                    mp.reset();
+                    mp.release();
+                    mp = null;
+                }
+
+            });
+            mp.start();
+
+        }
         upali();
 
         ImageView sunon = (ImageView) findViewById(R.id.sunon);
