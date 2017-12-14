@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             new MaterialStyledDialog.Builder(this)
 
-                    .setDescription("This is a simple material design app that uses a flashlight.\n")
+                    .setDescription("This is a simple material design app that uses a flashlight.\n\nMore options will be added soon,so stay tuned.")
                     .setHeaderDrawable(R.drawable.noc).withDialogAnimation(true)
                     .setIcon(R.mipmap.ic_launcher)
                     .setPositiveText("OK").onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -318,7 +318,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 @Override
                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 
-                    String url = "https://github.com/svetaz";
+                    String url = "https://github.com/svetaz/SimpleLightBulb";
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(url));
                     startActivity(i);
@@ -334,6 +334,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             i.setData(Uri.parse(url));
             startActivity(i);
         }
+
+     else if (id == R.id.nav_share) {
+
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "Download Simple Flashlight app from https://app.box.com/s/ulobzmtpqlyezoguaqdx7fxbs9r7xjlp");
+            sendIntent.setType("text/plain");
+            startActivity(sendIntent);
+
+    }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
