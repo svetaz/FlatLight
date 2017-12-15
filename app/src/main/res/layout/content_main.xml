@@ -95,10 +95,11 @@
         android:id="@+id/textStrobe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="BLINKING MODE ENABLED"
+        android:text="Blinking mode enabled"
         android:textAlignment="center"
+        android:gravity="center_vertical"
         android:textColor="@android:color/white"
-        android:drawableTop="@drawable/blink"
+        android:drawableLeft="@drawable/blink"
         android:drawableTint="@android:color/white"
         android:textSize="12sp"
         android:visibility="invisible"
@@ -108,6 +109,8 @@
 
 
         app:layout_constraintTop_toTopOf="parent"/>
+
+
 
 
 </android.support.constraint.ConstraintLayout>

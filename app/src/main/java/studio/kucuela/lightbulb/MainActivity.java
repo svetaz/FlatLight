@@ -33,6 +33,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static String NOTIF_AUTO = "notif_auto";
     public static String NOTIF_SOUND = "notif_sound";
     public static String NOTIF_STROBE = "notif_strobe";
+    public static String NOTIF_SCREEN = "notif_screen";
     final Handler handler = new Handler();
     Handler handler2 = new Handler();
 
@@ -80,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
 
         ugasi();
@@ -105,18 +109,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
+
         //provera podesenja
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
         boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
         boolean strobe = prefs.getBoolean(NOTIF_STROBE, false);
+        boolean screen = prefs.getBoolean(NOTIF_SCREEN, false);
         String END_POINT = prefs.getString("PREF_LIST", "1");
 
 
         if (strobe==true) {
 
             strobetext.setVisibility(View.VISIBLE);
+        }
+
+        if (screen==true) {
+
+            WindowManager.LayoutParams lp = getWindow().getAttributes();
+            lp.screenBrightness = 100 / 100.0f;
+            getWindow().setAttributes(lp);
+
         }
 
         if (END_POINT.matches("1")) {
@@ -365,26 +379,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageView mesecoff = (ImageView) findViewById(R.id.mesecoff);
         ImageView sunon = (ImageView) findViewById(R.id.sunon);
         ImageView sunoff = (ImageView) findViewById(R.id.sunoff);
+        TextView strobetext = (TextView)findViewById(R.id.textStrobe);
 
 
         if (bulboff.getVisibility() == View.VISIBLE) {
-            Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulboff);
+            Technique.BOUNCE.getComposer().duration(850).delay(0).playOn(bulboff);
         } else if (bulbon.getVisibility() == View.VISIBLE) {
-            Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulbon);
+            Technique.BOUNCE.getComposer().duration(850).delay(0).playOn(bulbon);
         } else if (mesecoff.getVisibility() == View.VISIBLE) {
-            Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(mesecoff);
+            Technique.BOUNCE.getComposer().duration(850).delay(0).playOn(mesecoff);
         } else if (mesecon.getVisibility() == View.VISIBLE) {
-            Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(mesecon);
+            Technique.BOUNCE.getComposer().duration(850).delay(0).playOn(mesecon);
         } else if (sunoff.getVisibility() == View.VISIBLE) {
-            Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(sunoff);
+            Technique.BOUNCE.getComposer().duration(850).delay(0).playOn(sunoff);
         } else if (sunon.getVisibility() == View.VISIBLE) {
-            Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(sunon);
+            Technique.BOUNCE.getComposer().duration(850).delay(0).playOn(sunon);
         }
 
-
-
-
-
+        Technique.LANDING.getComposer().duration(1700).delay(0).playOn(strobetext);
 
     }
 
