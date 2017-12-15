@@ -1,6 +1,7 @@
 package studio.kucuela.lightbulb;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +14,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -49,7 +51,10 @@ import android.widget.Toast;
 
 
 
+import java.io.File;
 import java.security.Policy;
+
+
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -61,9 +66,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static String NOTIF_SOUND = "notif_sound";
     public static String NOTIF_STROBE = "notif_strobe";
     public static String NOTIF_SCREEN = "notif_screen";
+
     final Handler handler = new Handler();
     Handler handler2 = new Handler();
 
+
+
+
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -71,6 +81,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+
+
 
         ugasi();
 
@@ -98,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
         boolean strobe = prefs.getBoolean(NOTIF_STROBE, false);
         boolean screen = prefs.getBoolean(NOTIF_SCREEN, false);
+
         String END_POINT = prefs.getString("PREF_LIST", "1");
 
 
@@ -111,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             WindowManager.LayoutParams lp = getWindow().getAttributes();
             lp.screenBrightness = 100 / 100.0f;
             getWindow().setAttributes(lp);
+
 
         }
 
@@ -245,9 +261,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulbon);
         }
-
-
-
     }
 
 
@@ -260,10 +273,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+
 
             ugasi();
             strobeoff();
+
+
+            super.onBackPressed();
 
 
         }
@@ -273,15 +289,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onDestroy() {
 
 
-            super.onDestroy();
-
             ugasi();
             strobeoff();
 
-    }
+        super.onDestroy();
 
-
-
+        }
 
 
 
@@ -291,9 +304,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_manage) {
-            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-        } else if (id == R.id.nav_send) {
+          if (id == R.id.nav_send) {
 
             new MaterialStyledDialog.Builder(this)
 
@@ -378,6 +389,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         Technique.LANDING.getComposer().duration(1700).delay(0).playOn(strobetext);
+
+
+
+
 
     }
 
@@ -706,7 +721,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
         lLayout.setBackgroundColor(Color.parseColor("#303030"));
-        //lLayout.setBackgroundResource(R.drawable.nocka);
+        //lLayout.setBackgroundResource(R.drawable.pustinja);
 
         Technique.WAVE.getComposer().duration(650).delay(0).playOn(mesecon);
 
@@ -722,6 +737,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
         String END_SOUNDS = prefs.getString("PREF_LIST_SOUNDS", "1");
         boolean strobe = prefs.getBoolean(NOTIF_STROBE, false);
+
         //if (END_SOUNDS.matches("3")){
 
 
@@ -840,6 +856,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean strobe = prefs.getBoolean(NOTIF_STROBE, false);
 
 
+
         if (strobe) {
 
             strobe();
@@ -850,6 +867,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             upali();
 
         }
+
+
 
 
         ImageView sunon = (ImageView) findViewById(R.id.sunon);
@@ -869,6 +888,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
+    }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+
+            return true;
+        }
+
+
+
+
+        return super.onOptionsItemSelected(item);
     }
 
 
