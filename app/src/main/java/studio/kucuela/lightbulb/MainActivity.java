@@ -64,17 +64,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     final Handler handler = new Handler();
     Handler handler2 = new Handler();
 
-    final Handler handler3 = new Handler();
-    Handler handler4 = new Handler();
-
-    final Handler handler5 = new Handler();
-    Handler handler6 = new Handler();
-    
-    
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -82,9 +71,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
-
 
         ugasi();
 
@@ -104,11 +90,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageView sunon = (ImageView) findViewById(R.id.sunon);
         ImageView sunoff = (ImageView) findViewById(R.id.sunoff);
         TextView strobetext = (TextView)findViewById(R.id.textStrobe);
-
-
-
-
-
 
         //provera podesenja
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -869,9 +850,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             upali();
 
         }
-
-
-
 
 
         ImageView sunon = (ImageView) findViewById(R.id.sunon);
