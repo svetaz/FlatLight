@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             bulbon.setVisibility(View.VISIBLE);
 
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#303030"));
+            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
             //lLayout.setBackgroundResource(R.drawable.nocka);
 
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulbon);
@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mesecon.setVisibility(View.VISIBLE);
 
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#303030"));
+            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
             //lLayout.setBackgroundResource(R.drawable.nocka);
 
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(mesecon);
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             sunon.setVisibility(View.VISIBLE);
 
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#303030"));
+            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
             //lLayout.setBackgroundResource(R.drawable.nocka);
 
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(mesecon);
@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             sunon.setVisibility(View.VISIBLE);
 
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#303030"));
+            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
             //lLayout.setBackgroundResource(R.drawable.nocka);
 
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(sunon);
@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mesecon.setVisibility(View.VISIBLE);
 
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#303030"));
+            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
             //lLayout.setBackgroundResource(R.drawable.nocka);
 
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(mesecon);
@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             bulbon.setVisibility(View.VISIBLE);
 
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#303030"));
+            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
             //lLayout.setBackgroundResource(R.drawable.nocka);
 
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulbon);
@@ -320,17 +320,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             })
 
-                    .setNegativeText("GITHUB").onNegative(new MaterialDialog.SingleButtonCallback() {
-                @Override
-                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-
-                    String url = "https://github.com/svetaz/SimpleLightBulb";
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(url));
-                    startActivity(i);
-                }
-            })
-
                     .show();
 
         } else if (id == R.id.nav_donate) {
@@ -350,6 +339,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(sendIntent);
 
     }
+
+    else if (id==R.id.nav_feedback){
+
+              Intent intent = new Intent(Intent.ACTION_VIEW);
+              intent.setData(Uri.parse("mailto:" + "rollbarbullbar@gmail.com"));
+              intent.putExtra(Intent.EXTRA_SUBJECT, "Feedback");
+              startActivity(Intent.createChooser(intent, "Send email"));
+          }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -513,7 +510,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bulbon.setVisibility(View.VISIBLE);
 
         ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-        lLayout.setBackgroundColor(Color.parseColor("#303030"));
+        lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
         //lLayout.setBackgroundResource(R.drawable.nocka);
 
         Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulbon);
@@ -566,7 +563,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bulbon.setVisibility(View.INVISIBLE);
 
         ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-        lLayout.setBackgroundColor(Color.parseColor("#161616"));
+        lLayout.setBackgroundColor(Color.parseColor("#332b2d"));
 
         Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulboff);
 
@@ -644,7 +641,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mesecon.setVisibility(View.INVISIBLE);
 
         ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-        lLayout.setBackgroundColor(Color.parseColor("#161616"));
+        lLayout.setBackgroundColor(Color.parseColor("#332b2d"));
 
         Technique.WAVE.getComposer().duration(650).delay(0).playOn(mesecoff);
 
@@ -720,7 +717,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mesecon.setVisibility(View.VISIBLE);
 
         ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-        lLayout.setBackgroundColor(Color.parseColor("#303030"));
+        lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
         //lLayout.setBackgroundResource(R.drawable.pustinja);
 
         Technique.WAVE.getComposer().duration(650).delay(0).playOn(mesecon);
@@ -798,7 +795,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         sunon.setVisibility(View.INVISIBLE);
 
         ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-        lLayout.setBackgroundColor(Color.parseColor("#161616"));
+        lLayout.setBackgroundColor(Color.parseColor("#332b2d"));
 
         Technique.ROTATE.getComposer().duration(650).delay(0).playOn(sunoff);
 
@@ -878,7 +875,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         sunon.setVisibility(View.VISIBLE);
 
         ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-        lLayout.setBackgroundColor(Color.parseColor("#303030"));
+        lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
         //lLayout.setBackgroundResource(R.drawable.nocka);
 
 

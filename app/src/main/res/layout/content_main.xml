@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#161616"
+    android:background="#332b2d"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="studio.kucuela.lightbulb.MainActivity"
     tools:showIn="@layout/app_bar_main">
@@ -109,6 +109,10 @@
 
 
         app:layout_constraintTop_toTopOf="parent"/>
+
+
+
+
 
 
 
