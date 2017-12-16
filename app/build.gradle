@@ -35,4 +35,9 @@ dependencies {
         transitive = true
     }
 
+    dependencies {
+        compile 'de.halfbit:tinybus:3.0.2'
+        compile 'de.halfbit:tinybus-extensions:3.0.2'
+    }
+
 }

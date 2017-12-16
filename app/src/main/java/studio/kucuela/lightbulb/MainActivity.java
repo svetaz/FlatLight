@@ -56,6 +56,10 @@ import android.widget.Toast;
 import java.io.File;
 import java.security.Policy;
 
+import de.halfbit.tinybus.Subscribe;
+import de.halfbit.tinybus.TinyBus;
+import de.halfbit.tinybus.wires.ShakeEventWire;
+
 
 
 
@@ -68,11 +72,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static String NOTIF_SOUND = "notif_sound";
     public static String NOTIF_STROBE = "notif_strobe";
     public static String NOTIF_SCREEN = "notif_screen";
+    public static String NOTIF_SHAKE = "notif_shake";
 
     final Handler handler = new Handler();
     Handler handler2 = new Handler();
 
-
+    private TinyBus mBus;
 
 
     @SuppressLint("ResourceAsColor")
@@ -83,6 +88,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // get bus instance
+        mBus = TinyBus.from(this);
+
+        if (savedInstanceState == null) {
+            // Note: ShakeEventWire stays wired when activity is re-created
+            //       on configuration change. That's why we register is
+            //       only once inside if-statement.
+
+            // wire device shake event provider
+            mBus.wire(new ShakeEventWire());
+        }
+
 
 
 
@@ -310,7 +328,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             new MaterialStyledDialog.Builder(this)
                     .setTitle("About")
-                    .setDescription("This is a simple material design app that uses phone flashlight. I tried to keep it as minimal as possible,without too much fancy buttons and useless options.There are 3 light source themes at the moment and i will try to add more in the future.Please feel free to send me any kind of feedback,both positive and negative,so we can together make this app even better.")
+                    .setDescription("This is a simple material design app that uses phone flashlight. I tried to keep it as minimal as possible,without any fancy buttons or useless options.There are 3 light source themes at the moment and i will try to add more in the future.Please feel free to send me any kind of feedback,both positive and negative.")
                     .setHeaderDrawable(R.drawable.noc).withDialogAnimation(true)
                     .setIcon(R.mipmap.ic_launcher)
                     .setPositiveText("OK").onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -360,6 +378,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
               intent.setData(Uri.parse("mailto:" + "rollbarbullbar@gmail.com"));
               intent.putExtra(Intent.EXTRA_SUBJECT, "Feedback");
               startActivity(Intent.createChooser(intent, "Send email"));
+          }
+          else if (id==R.id.nav_settings){
+
+              startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+
           }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -903,7 +926,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
@@ -921,7 +944,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
 
-            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+
 
             return true;
         }
@@ -931,9 +954,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         return super.onOptionsItemSelected(item);
     }
+*/
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //provera podesenja
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean shake = prefs.getBoolean(NOTIF_SHAKE, false);
+        if (shake) {
+        mBus.register(this);}
+
+    }
+
+    @Override
+    protected void onStop() {
+
+        if (mBus.hasRegistered(this)){
+        mBus.unregister(this);
+        }
+
+        super.onStop();
+    }
+
+    @Subscribe
+    public void onShakeEvent(ShakeEventWire.ShakeEvent event) {
 
 
 
+            ugasi();
+            strobeoff();
+            finish();
+
+
+    }
 
 
 }
