@@ -348,7 +348,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "Download Simple Flashlight app from https://app.box.com/v/simpleflashlight");
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "Download Simple Flashlight app from https://app.box.com/v/minimalflashlight");
             sendIntent.setType("text/plain");
             startActivity(sendIntent);
 
