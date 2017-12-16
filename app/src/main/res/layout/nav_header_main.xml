@@ -37,8 +37,7 @@
 
 
         android:paddingTop="5dp"
-        android:text="“We can easily forgive a child who is afraid of the dark;
-  the real tragedy of life is when men are afraid of the light.”"
+        android:text="“We can easily forgive a child who is afraid of the dark;the real tragedy of life is when men are afraid of the light.”"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="12sp"/>
 

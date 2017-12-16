@@ -41,6 +41,8 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.jrummyapps.android.animations.Technique;
+import com.mikepenz.aboutlibraries.Libs;
+import com.mikepenz.aboutlibraries.LibsBuilder;
 
 import android.app.Activity;
 
@@ -307,8 +309,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
           if (id == R.id.nav_send) {
 
             new MaterialStyledDialog.Builder(this)
-
-                    .setDescription("This is a simple material design app that uses a flashlight.\n\nMore options will be added soon,so stay tuned.")
+                    .setTitle("About")
+                    .setDescription("This is a simple material design app that uses phone flashlight. I tried to keep it as minimal as possible,without too much fancy buttons and useless options.There are 3 light source themes at the moment and i will try to add more in the future.Please feel free to send me any kind of feedback,both positive and negative,so we can together make this app even better.")
                     .setHeaderDrawable(R.drawable.noc).withDialogAnimation(true)
                     .setIcon(R.mipmap.ic_launcher)
                     .setPositiveText("OK").onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -319,6 +321,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     dialog.dismiss();
                 }
             })
+                    .setNeutralText("Open source libraries").onNeutral(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                            new LibsBuilder()
+                            //provide a style (optional) (LIGHT, DARK, LIGHT_DARK_TOOLBAR)
+                            .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
+                            //start the activity
+                            .start(MainActivity.this);
+                }
+            })
+
 
                     .show();
 
