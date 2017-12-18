@@ -1,8 +1,7 @@
 # Minimal Flashlight
-
 Apk link: https://app.box.com/v/minimalflashlight
 
-![Alt text](https://i.imgur.com/H1XM0yV.png)
+![Alt text](https://i.imgur.com/6uKi6xF.png)
 
 
 
