@@ -8,10 +8,13 @@ import android.content.SharedPreferences;
 import android.graphics.Camera;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -21,6 +24,7 @@ import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.res.ResourcesCompat;
@@ -47,6 +51,7 @@ import com.mikepenz.aboutlibraries.LibsBuilder;
 import android.app.Activity;
 
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,9 +61,10 @@ import android.widget.Toast;
 import java.io.File;
 import java.security.Policy;
 
-import de.halfbit.tinybus.Subscribe;
-import de.halfbit.tinybus.TinyBus;
-import de.halfbit.tinybus.wires.ShakeEventWire;
+
+
+
+
 
 
 
@@ -73,11 +79,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static String NOTIF_STROBE = "notif_strobe";
     public static String NOTIF_SCREEN = "notif_screen";
     public static String NOTIF_SHAKE = "notif_shake";
+    public static String NOTIF_SNACK = "notif_snack";
 
     final Handler handler = new Handler();
     Handler handler2 = new Handler();
 
-    private TinyBus mBus;
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
+
+
 
 
     @SuppressLint("ResourceAsColor")
@@ -89,17 +100,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // get bus instance
-        mBus = TinyBus.from(this);
 
-        if (savedInstanceState == null) {
-            // Note: ShakeEventWire stays wired when activity is re-created
-            //       on configuration change. That's why we register is
-            //       only once inside if-statement.
+// ShakeDetector initialization
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
 
-            // wire device shake event provider
-            mBus.wire(new ShakeEventWire());
-        }
+            @Override
+            public void onShake(int count) {
+				/*
+				 * The following method, "handleShakeEvent(count):" is a stub //
+				 * method you would use to setup whatever you want done once the
+				 * device has been shook.
+				 */
+                handleShakeEvent(count);
+            }
+        });
 
 
 
@@ -107,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         ugasi();
+        strobeoff();
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -123,7 +142,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageView mesecoff = (ImageView) findViewById(R.id.mesecoff);
         ImageView sunon = (ImageView) findViewById(R.id.sunon);
         ImageView sunoff = (ImageView) findViewById(R.id.sunoff);
-        TextView strobetext = (TextView)findViewById(R.id.textStrobe);
+
+
+
+
 
         //provera podesenja
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -132,14 +154,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
         boolean strobe = prefs.getBoolean(NOTIF_STROBE, false);
         boolean screen = prefs.getBoolean(NOTIF_SCREEN, false);
-
+        boolean shake = prefs.getBoolean(NOTIF_SHAKE, false);
+        boolean snack = prefs.getBoolean(NOTIF_SNACK, true);
         String END_POINT = prefs.getString("PREF_LIST", "1");
 
 
-        if (strobe==true) {
+        if(snack) {
 
-            strobetext.setVisibility(View.VISIBLE);
+            if (strobe | shake) {
+
+                View coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coord);
+                Snackbar.make(coordinatorLayout, "Blinking lights and/or\nshake listener enabled", Snackbar.LENGTH_LONG)
+
+                        .setAction("SETTINGS", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+
+                            }
+                        })
+
+
+                        .show();
+
+            }
+
         }
+
+
+
+
+
+
 
         if (screen==true) {
 
@@ -286,6 +333,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
+
+
     @Override
     public void onBackPressed() {
 
@@ -328,7 +377,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             new MaterialStyledDialog.Builder(this)
                     .setTitle("About")
-                    .setDescription("This is a simple material design app that uses phone flashlight. I tried to keep it as minimal as possible,without any fancy buttons or useless options.There are 3 light source themes at the moment and i will try to add more in the future.Please feel free to send me any kind of feedback,both positive and negative.")
+                    .setDescription("• A simple material design app that uses phone flashlight\n• No ads\n• Tried to keep it as minimal as possible,without any fancy buttons or useless options\n• There are 3 light source themes at the moment and i will try to add more in the future\n• Feel free to send me any kind of feedback,both positive and negative and tell me what features would you like to see in this app\n")
                     .setHeaderDrawable(R.drawable.noc).withDialogAnimation(true)
                     .setIcon(R.mipmap.ic_launcher)
                     .setPositiveText("OK").onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -405,7 +454,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageView mesecoff = (ImageView) findViewById(R.id.mesecoff);
         ImageView sunon = (ImageView) findViewById(R.id.sunon);
         ImageView sunoff = (ImageView) findViewById(R.id.sunoff);
-        TextView strobetext = (TextView)findViewById(R.id.textStrobe);
+        boolean shake = prefs.getBoolean(NOTIF_SHAKE, false);
 
 
         if (bulboff.getVisibility() == View.VISIBLE) {
@@ -422,7 +471,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Technique.BOUNCE.getComposer().duration(850).delay(0).playOn(sunon);
         }
 
-        Technique.LANDING.getComposer().duration(1700).delay(0).playOn(strobetext);
+
+// Add the following line to register the Session Manager Listener onResume
+
+
+        if(shake){
+
+            mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
+
+
+        }
+
 
 
 
@@ -468,14 +527,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void strobe () {
 
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String END_STROBE = prefs.getString("PREF_LIST_STROBE", "1");
 
+        if (END_STROBE.matches("1")) {
 
         handler.postDelayed(new Runnable() {
             public void run() {
                 ugasi();
 
             }
-        }, 650);
+        },650);
 
 
 
@@ -485,7 +547,47 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 strobe();
 
             }
-        }, 1000);
+        }, 1000); }
+
+        if (END_STROBE.matches("2")) {
+
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    ugasi();
+
+                }
+            },450);
+
+
+
+            handler2.postDelayed(new Runnable() {
+                public void run() {
+                    upali();
+                    strobe();
+
+                }
+            }, 750); }
+
+        if (END_STROBE.matches("3")) {
+
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    ugasi();
+
+                }
+            },350);
+
+
+
+            handler2.postDelayed(new Runnable() {
+                public void run() {
+                    upali();
+                    strobe();
+
+                }
+            }, 350); }
+
+
 
     }
 
@@ -956,38 +1058,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 */
 
+
+
+
+
     @Override
-    protected void onStart() {
-        super.onStart();
-        //provera podesenja
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean shake = prefs.getBoolean(NOTIF_SHAKE, false);
-        if (shake) {
-        mBus.register(this);}
+    public void onPause() {
+        // Add the following line to unregister the Sensor Manager onPause
+        mSensorManager.unregisterListener(mShakeDetector);
+        super.onPause();
+    }
+
+    private void handleShakeEvent(int count) {
+
+        ugasi();
+        strobeoff();
+        finish();
+
+      //Toast.makeText(this,"SHAKED",Toast.LENGTH_SHORT).show();
 
     }
 
-    @Override
-    protected void onStop() {
-
-        if (mBus.hasRegistered(this)){
-        mBus.unregister(this);
-        }
-
-        super.onStop();
-    }
-
-    @Subscribe
-    public void onShakeEvent(ShakeEventWire.ShakeEvent event) {
-
-
-
-            ugasi();
-            strobeoff();
-            finish();
-
-
-    }
 
 
 }
+
