@@ -30,6 +30,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.view.SupportActionModeWrapper;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static String NOTIF_STROBE = "notif_strobe";
     public static String NOTIF_SCREEN = "notif_screen";
     public static String NOTIF_SHAKE = "notif_shake";
-    public static String NOTIF_SNACK = "notif_snack";
+
 
     final Handler handler = new Handler();
     Handler handler2 = new Handler();
@@ -142,6 +143,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageView mesecoff = (ImageView) findViewById(R.id.mesecoff);
         ImageView sunon = (ImageView) findViewById(R.id.sunon);
         ImageView sunoff = (ImageView) findViewById(R.id.sunoff);
+        TextView shakejpg = (TextView) findViewById(R.id.imageShake);
+        TextView flashjpg = (TextView) findViewById(R.id.imageFlash);
+        ConstraintLayout cl = (ConstraintLayout)findViewById(R.id.layout);
 
 
 
@@ -155,32 +159,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean strobe = prefs.getBoolean(NOTIF_STROBE, false);
         boolean screen = prefs.getBoolean(NOTIF_SCREEN, false);
         boolean shake = prefs.getBoolean(NOTIF_SHAKE, false);
-        boolean snack = prefs.getBoolean(NOTIF_SNACK, true);
+
         String END_POINT = prefs.getString("PREF_LIST", "1");
 
 
-        if(snack) {
+        if (shake){
 
-            if (strobe | shake) {
-
-                View coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coord);
-                Snackbar.make(coordinatorLayout, "Blinking lights and/or\nshake listener enabled", Snackbar.LENGTH_LONG)
-
-                        .setAction("SETTINGS", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-
-                            }
-                        })
+            shakejpg.setVisibility(View.VISIBLE);
 
 
-                        .show();
-
-            }
 
         }
+
+        if (strobe){
+
+            flashjpg.setVisibility(View.VISIBLE);
+
+
+        }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -454,6 +459,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageView mesecoff = (ImageView) findViewById(R.id.mesecoff);
         ImageView sunon = (ImageView) findViewById(R.id.sunon);
         ImageView sunoff = (ImageView) findViewById(R.id.sunoff);
+        TextView shakejpg = (TextView) findViewById(R.id.imageShake);
+        TextView flashjpg = (TextView) findViewById(R.id.imageFlash);
         boolean shake = prefs.getBoolean(NOTIF_SHAKE, false);
 
 
@@ -482,7 +489,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
 
-
+        Technique.BOUNCE_IN_DOWN.getComposer().duration(850).delay(0).playOn(shakejpg);
+        Technique.BOUNCE_IN_DOWN.getComposer().duration(850).delay(0).playOn(flashjpg);
 
 
 
