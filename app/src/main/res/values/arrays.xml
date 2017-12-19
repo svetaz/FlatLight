@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="listentries">
+        <item>Good old Light Bulb</item>
+               <item>The Mysterious Moon</item>
+               <item>Geometric Sun</item>
+
+    </string-array>
+    <string-array name="listvalues">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+
+
+    </string-array>
+
+
+    <string-array name="listentriessounds">
+
+        <item>Different click sound for each light source</item>
+        <item>Same click sound for all light sources</item>
+
+
+    </string-array>
+    <string-array name="listvaluessounds">
+        <item>1</item>
+        <item>2</item>
+
+
+
+    </string-array>
+
+    <string-array name="listentriesstrobe">
+
+        <item>Normal</item>
+        <item>A little bit faster</item>
+        <item>The fastest</item>
+
+
+    </string-array>
+    <string-array name="listvaluesstrobe">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+
+
+
+
+</resources>

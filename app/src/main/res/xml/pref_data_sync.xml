@@ -1,0 +1,120 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:recycleEnabled="true">
+
+    <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
+         dismiss it. -->
+    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
+
+
+
+
+    <PreferenceCategory
+        android:title="Lights">
+
+        <ListPreference
+            android:key="PREF_LIST"
+            android:title="Light source"
+            android:icon="@drawable/source"
+            android:summary="choose your favorite source of light"
+            android:entries="@array/listentries"
+            android:entryValues="@array/listvalues"
+            android:defaultValue="1"/>
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="notif_auto"
+            android:icon="@drawable/flash"
+            android:summaryOn="app will start with lights on"
+            android:summaryOff="app will start with lights off"
+            android:title="Starting lights" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="notif_screen"
+            android:icon="@drawable/screen"
+            android:summaryOn="screen brightness set to max to help you find your way in the darkness"
+            android:summaryOff="screen brightness wont be changed"
+            android:title="Use screen as flashlight" />
+
+        <SwitchPreference
+
+            android:defaultValue="false"
+            android:key="notif_strobe"
+            android:icon="@drawable/blink"
+            android:summaryOn="blinking lights will be used"
+            android:summaryOff="normal lights will be used"
+            android:title="Use blinking (signal) lights" />
+
+        <ListPreference
+            android:key="PREF_LIST_STROBE"
+            android:title="Blinking rate"
+            android:icon="@drawable/speed"
+            android:dependency="notif_strobe"
+            android:summary="choose a speed that suits you"
+            android:entries="@array/listentriesstrobe"
+            android:entryValues="@array/listvaluesstrobe"
+            android:defaultValue="1"/>
+
+
+
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Motion">
+
+
+
+
+        <SwitchPreference
+
+            android:defaultValue="false"
+            android:key="notif_shake"
+            android:icon="@drawable/shake"
+            android:summaryOn="shake listener is on"
+            android:summaryOff="shake listener is off"
+            android:title="Shake to close the app" />
+
+
+    </PreferenceCategory>
+
+
+
+
+
+
+
+
+    <PreferenceCategory
+        android:title="Sounds">
+
+
+
+
+        <SwitchPreference
+
+            android:defaultValue="true"
+            android:key="notif_sound"
+            android:icon="@drawable/sound"
+            android:summaryOn="sounds is on"
+            android:summaryOff="sounds is off"
+            android:title="Light switch sound" />
+
+        <ListPreference
+            android:key="PREF_LIST_SOUNDS"
+            android:title="Light switch tone"
+            android:icon="@drawable/music"
+            android:summary="choose a tone for light switch"
+            android:dependency="notif_sound"
+            android:entries="@array/listentriessounds"
+            android:entryValues="@array/listvaluessounds"
+            android:defaultValue="1"/>
+    </PreferenceCategory>
+
+
+
+
+
+
+</PreferenceScreen>
