@@ -15,7 +15,7 @@
             android:key="PREF_LIST"
             android:title="Light source"
             android:icon="@drawable/source"
-            android:summary="choose your favorite source of light"
+            android:summary="%s"
             android:entries="@array/listentries"
             android:entryValues="@array/listvalues"
             android:defaultValue="1"/>
@@ -42,7 +42,7 @@
             android:key="notif_strobe"
             android:icon="@drawable/blink"
             android:summaryOn="blinking lights will be used"
-            android:summaryOff="normal lights will be used"
+            android:summaryOff="standard lights will be used"
             android:title="Use blinking (signal) lights" />
 
         <ListPreference
@@ -50,7 +50,7 @@
             android:title="Blinking rate"
             android:icon="@drawable/speed"
             android:dependency="notif_strobe"
-            android:summary="choose a speed that suits you"
+            android:summary="%s"
             android:entries="@array/listentriesstrobe"
             android:entryValues="@array/listvaluesstrobe"
             android:defaultValue="1"/>
@@ -105,7 +105,7 @@
             android:key="PREF_LIST_SOUNDS"
             android:title="Light switch tone"
             android:icon="@drawable/music"
-            android:summary="choose a tone for light switch"
+            android:summary="%s"
             android:dependency="notif_sound"
             android:entries="@array/listentriessounds"
             android:entryValues="@array/listvaluessounds"
