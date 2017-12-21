@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="listentries">
-        <item>Good old Light Bulb</item>
-               <item>The Mysterious Moon</item>
-               <item>Geometric Sun</item>
+        <item>Light Bulb</item>
+        <item>The Sun</item>
+               <item>The Moon</item>
+
 
     </string-array>
     <string-array name="listvalues">
         <item>1</item>
-        <item>2</item>
         <item>3</item>
+        <item>2</item>
 
 
     </string-array>

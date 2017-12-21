@@ -97,8 +97,8 @@
             android:defaultValue="true"
             android:key="notif_sound"
             android:icon="@drawable/sound"
-            android:summaryOn="sounds is on"
-            android:summaryOff="sounds is off"
+            android:summaryOn="sounds are on"
+            android:summaryOff="sounds are off"
             android:title="Light switch sound" />
 
         <ListPreference
@@ -110,6 +110,21 @@
             android:entries="@array/listentriessounds"
             android:entryValues="@array/listvaluessounds"
             android:defaultValue="1"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Other">
+
+        <SwitchPreference
+
+            android:defaultValue="true"
+            android:key="notif_tips"
+            android:icon="@drawable/snack"
+
+            android:title="Show tips on startup" />
+
+
+
     </PreferenceCategory>
 
 

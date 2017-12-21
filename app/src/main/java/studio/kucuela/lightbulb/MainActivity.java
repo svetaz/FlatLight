@@ -41,6 +41,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -61,11 +62,11 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.security.Policy;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
-
-
-
-
+import in.myinnos.library.AppIconNameChanger;
 
 
 
@@ -80,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static String NOTIF_STROBE = "notif_strobe";
     public static String NOTIF_SCREEN = "notif_screen";
     public static String NOTIF_SHAKE = "notif_shake";
+    public static String NOTIF_TIPS = "notif_tips";
 
 
     final Handler handler = new Handler();
@@ -91,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
 
 // ShakeDetector initialization
@@ -159,8 +161,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean strobe = prefs.getBoolean(NOTIF_STROBE, false);
         boolean screen = prefs.getBoolean(NOTIF_SCREEN, false);
         boolean shake = prefs.getBoolean(NOTIF_SHAKE, false);
+        boolean tips = prefs.getBoolean(NOTIF_TIPS, true);
 
         String END_POINT = prefs.getString("PREF_LIST", "1");
+
+        if (tips){
+
+            View coordinatorLayout = (ConstraintLayout)findViewById(R.id.layout);
+
+            final String[] r1 = new String[] {"Tip: You can change app's light source","Tip: You can start the app with lights on","Tip: You can use your screen as second flashlight",
+            "Tip: You can turn on blinking lights for signaling","Tip: You can shake your phone to close the app","Tip: You can change light switch sound"};
+            final int randomMsgIndex = new Random().nextInt(r1.length);
+
+            final Snackbar snackbar = Snackbar.make(coordinatorLayout,r1[randomMsgIndex], Snackbar.LENGTH_LONG);
+
+            // Set an action on it, and a handler
+            snackbar.setAction("SETTINGS", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                }
+            });
+
+
+
+            snackbar.show();
+
+
+
+        }
 
 
         if (shake){
