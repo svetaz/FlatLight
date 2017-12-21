@@ -145,8 +145,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageView mesecoff = (ImageView) findViewById(R.id.mesecoff);
         ImageView sunon = (ImageView) findViewById(R.id.sunon);
         ImageView sunoff = (ImageView) findViewById(R.id.sunoff);
-        TextView shakejpg = (TextView) findViewById(R.id.imageShake);
-        TextView flashjpg = (TextView) findViewById(R.id.imageFlash);
+
         ConstraintLayout cl = (ConstraintLayout)findViewById(R.id.layout);
 
 
@@ -167,13 +166,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (tips){
 
-            View coordinatorLayout = (ConstraintLayout)findViewById(R.id.layout);
+
 
             final String[] r1 = new String[] {"Tip: You can change app's light source","Tip: You can start the app with lights on","Tip: You can use your screen as second flashlight",
             "Tip: You can turn on blinking lights for signaling","Tip: You can shake your phone to close the app","Tip: You can change light switch sound"};
             final int randomMsgIndex = new Random().nextInt(r1.length);
 
-            final Snackbar snackbar = Snackbar.make(coordinatorLayout,r1[randomMsgIndex], Snackbar.LENGTH_LONG);
+            final Snackbar snackbar = Snackbar.make(cl,r1[randomMsgIndex], Snackbar.LENGTH_LONG);
 
             // Set an action on it, and a handler
             snackbar.setAction("SETTINGS", new View.OnClickListener() {
@@ -192,20 +191,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
-        if (shake){
 
-            shakejpg.setVisibility(View.VISIBLE);
-
-
-
-        }
-
-        if (strobe){
-
-            flashjpg.setVisibility(View.VISIBLE);
-
-
-        }
 
 
 
@@ -488,8 +474,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageView mesecoff = (ImageView) findViewById(R.id.mesecoff);
         ImageView sunon = (ImageView) findViewById(R.id.sunon);
         ImageView sunoff = (ImageView) findViewById(R.id.sunoff);
-        TextView shakejpg = (TextView) findViewById(R.id.imageShake);
-        TextView flashjpg = (TextView) findViewById(R.id.imageFlash);
+
         boolean shake = prefs.getBoolean(NOTIF_SHAKE, false);
 
 
@@ -518,8 +503,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
 
-        Technique.BOUNCE_IN_DOWN.getComposer().duration(850).delay(0).playOn(shakejpg);
-        Technique.BOUNCE_IN_DOWN.getComposer().duration(850).delay(0).playOn(flashjpg);
+
 
 
 
