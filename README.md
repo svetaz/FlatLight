@@ -1,12 +1,12 @@
-# Minimal Flashlight
+# FlatLight
 
 *Min SDK 23(M)*
 
-*Some devices working on O/M issues resolved.Should work ok now*
+Apk link: https://app.box.com/v/flatlight
 
-Apk link: https://app.box.com/v/minimalflashlight
+![Alt text](https://public.boxcloud.com/api/2.0/internal_files/259481646861/versions/273438861837/representations/jpg_paged_2048x2048/content/1.jpg?access_token=1!5d37iNHye9HMgPzYjhkOspaHVLofPWObEZgevTihPKZ-AzgMtp6mTzWjlGYtSRThAEF9GpSa6VG7haCpY6nztu4QHO3WZj4ZHiOja5YkJhY4I5Tu6qx-KpiV4_V_cANiJL766SSX24WOC7SQxdGh168bRJl8CdZsK17A2kRYQGGQC1WyZTQQpUS2FN7t35oKvB6o7HbRUs_pD9kyrfP7caEdtAIV5eOpWFP0fMN1lNKiXB6VbQsfVe6z1s_wGmGmKKjdHYY6_k3ta1npBPZ5pMGIwcTU6KfItTlB9BFYtN-OzEsrRn5JH8wB6SrAYO4DZTU0kXNHQOZSy2ycCdX3XSFgr2AllaLuG0TClo-6Wk3M0nEmpztnLNYY8G8YhfK64YG2ZVi_sB7GLQZK&box_client_name=box-content-preview&box_client_version=1.23.1)
 
-![Alt text](https://i.imgur.com/6uKi6xF.png)
+![Alt text](https://public.boxcloud.com/api/2.0/internal_files/259481532818/versions/273438750674/representations/jpg_paged_2048x2048/content/1.jpg?access_token=1!XBgF7E43S7XvCLmG6H2mlY26un8lkOBv7s_8p9pzovDsV8Mu2mlqaUeuJ2sE6-KldESAbdcpVqpVkuzxW8vHxLXXVCADrY7-86NCK_ynq0BFT7k1ODSiZYAmTBL9UgJ9_sBMN8Z53lOqkn1q5cgICoaKaOYyEHueCXHi8BestcOg_AKSeV6CYHVezeysRJ0w7GriNIgbrPKAY8HPtGWlrAF9DN9lUlcqH6mFp0NUft-4BcJTjDrW9x9wW9zK3-zSxlXf1fVIONRrexNdiprr28bKqsO0VLG8YPNw9INTaWVofP2eqgZpmM-4uqzhxcAhqiMY8FwL1iqXY6aMmLrMc05Cqh4gNwUuArmKoQU6NEkGXrVf4xdZt1iV4NZ1Z_UW8kMpUDsgvPW9_7b3&box_client_name=box-content-preview&box_client_version=1.23.1)
 
 
 
