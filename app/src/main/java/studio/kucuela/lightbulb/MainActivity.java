@@ -467,7 +467,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             new MaterialStyledDialog.Builder(this)
                     .setTitle("About")
-                    .setDescription("• A simple material design app that uses phone flashlight\n• No ads\n• Tried to keep it as minimal as possible,without any fancy buttons or useless options\n• There are 3 light source themes at the moment and i will try to add more in the future\n• Feel free to send me any kind of feedback,both positive and negative and tell me what features would you like to see in this app\n")
+                    .setDescription("• A simple material design app that uses phone flashlight\n• No ads!\n• Tried to keep it as minimal as possible,without any fancy buttons or useless options\n• There are 3 light source themes at the moment and i will try to add more in the future\n• Feel free to send me any kind of feedback,both positive and negative and tell me what features would you like to see in this app\n")
                     .setHeaderDrawable(R.drawable.nocka).withDialogAnimation(true)
                     .setIcon(R.mipmap.logo)
                     .setPositiveText("OK").onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -505,7 +505,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "Download Simple Flashlight app from https://app.box.com/v/minimalflashlight");
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "Download FlatLight app from https://app.box.com/v/flatlight");
             sendIntent.setType("text/plain");
             startActivity(sendIntent);
 
