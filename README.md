@@ -1,4 +1,4 @@
-# Minimal Flashlight
+# FlatLight
 
 *Min SDK 23(M)*
 
