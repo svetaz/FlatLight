@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private SharedPreferences prefs;
 
+
     public static final int MY_PERMISSIONS_REQUEST_WRITE_CALENDAR = 123;
 
     public static String NOTIF_AUTO = "notif_auto";
