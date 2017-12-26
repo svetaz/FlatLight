@@ -34,8 +34,8 @@
             android:defaultValue="false"
             android:key="notif_auto"
             android:icon="@drawable/flash"
-            android:summaryOn="app will start with lights on"
-            android:summaryOff="app will start with lights off"
+
+            android:summary="start the app with lights on"
             android:title="Starting lights" />
 
 
@@ -45,8 +45,8 @@
             android:defaultValue="false"
             android:key="notif_strobe"
             android:icon="@drawable/blink"
-            android:summaryOn="blinking lights will be used"
-            android:summaryOff="standard lights will be used"
+            android:summary="blinking lights will replace standard ones"
+
             android:title="Use blinking (signal) lights" />
 
         <ListPreference
@@ -78,7 +78,7 @@
         android:defaultValue="false"
         android:key="notif_screen"
         android:icon="@drawable/screen"
-       android:summary="max brightness and white screen"
+       android:summary="maximize brightness and use white screen"
         android:title="Use screen as flashlight" />
 
     <SwitchPreference
