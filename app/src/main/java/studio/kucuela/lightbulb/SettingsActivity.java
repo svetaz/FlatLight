@@ -51,10 +51,13 @@ public class SettingsActivity extends PreferenceActivity {
     protected void onPause() {
         super.onPause();
 
-        Intent i = getApplicationContext().getPackageManager()
-                .getLaunchIntentForPackage(getApplicationContext().getPackageName() );
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK );
-        startActivity(i);
+        Intent restartIntent = new Intent(this, MainActivity.class);
+        restartIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //Set this flag
+        startActivity(restartIntent);
+        finish();
+
+
+
 
 
 

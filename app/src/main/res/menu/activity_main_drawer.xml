@@ -43,12 +43,6 @@
     <group
         android:id="@+id/grupa3">
 
-        <item
-
-
-            android:title="Version: 1.0"
-            android:enabled="false"/>
-
 
 
     </group>

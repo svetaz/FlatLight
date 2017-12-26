@@ -1,18 +1,32 @@
 package studio.kucuela.lightbulb;
 
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.graphics.Camera;
 import android.graphics.Color;
+import android.graphics.SurfaceTexture;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
 import android.media.MediaPlayer;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.opengl.Visibility;
 import android.os.Build;
@@ -22,14 +36,20 @@ import android.os.Handler;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.view.SupportActionModeWrapper;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -60,13 +80,26 @@ import android.widget.Toast;
 
 
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Executable;
 import java.security.Policy;
+import java.time.temporal.ValueRange;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import in.myinnos.library.AppIconNameChanger;
+
+import android.hardware.Sensor;
+
+import android.hardware.SensorEvent;
+
+import android.hardware.SensorEventListener;
+
+import android.hardware.SensorManager;
 
 
 
@@ -76,12 +109,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private SharedPreferences prefs;
 
+    public static final int MY_PERMISSIONS_REQUEST_WRITE_CALENDAR = 123;
+
     public static String NOTIF_AUTO = "notif_auto";
     public static String NOTIF_SOUND = "notif_sound";
     public static String NOTIF_STROBE = "notif_strobe";
     public static String NOTIF_SCREEN = "notif_screen";
     public static String NOTIF_SHAKE = "notif_shake";
     public static String NOTIF_TIPS = "notif_tips";
+    public static String NOTIF_ON = "notif_on";
+    public static String NOTIF_FULLSCREEN = "notif_fullscreen";
+    public static String NOTIF_NOTIF = "notif_notif";
+
 
 
     final Handler handler = new Handler();
@@ -104,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
+
 // ShakeDetector initialization
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager
@@ -123,12 +163,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
 
-
-
-
+            //PERMISSIONS
 
         ugasi();
         strobeoff();
+
+
+
+
+
+
+
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -152,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
+
         //provera podesenja
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -161,15 +208,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean screen = prefs.getBoolean(NOTIF_SCREEN, false);
         boolean shake = prefs.getBoolean(NOTIF_SHAKE, false);
         boolean tips = prefs.getBoolean(NOTIF_TIPS, true);
+        boolean on = prefs.getBoolean(NOTIF_ON, false);
+        boolean fullscreen = prefs.getBoolean(NOTIF_FULLSCREEN, false);
+        boolean notification = prefs.getBoolean(NOTIF_NOTIF, false);
 
         String END_POINT = prefs.getString("PREF_LIST", "1");
+
+
+
+
+
+        if(on){
+
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        }
+
+        if(fullscreen){
+
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        }
 
         if (tips){
 
 
 
             final String[] r1 = new String[] {"Tip: You can change app's light source","Tip: You can start the app with lights on","Tip: You can use your screen as second flashlight",
-            "Tip: You can turn on blinking lights for signaling","Tip: You can shake your phone to close the app","Tip: You can change light switch sound"};
+            "Tip: You can turn on blinking lights for signaling","Tip: You can shake your phone for various actions","Tip: You can change light switch sound",
+                    "Tip: You can set your screen never to turn off","Tip: You can display the app in fullscreen","Tip: You can set ongoing notification and use it as shortcut"};
             final int randomMsgIndex = new Random().nextInt(r1.length);
 
             final Snackbar snackbar = Snackbar.make(cl,r1[randomMsgIndex], Snackbar.LENGTH_LONG);
@@ -191,28 +258,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         if (screen==true) {
 
             WindowManager.LayoutParams lp = getWindow().getAttributes();
             lp.screenBrightness = 100 / 100.0f;
             getWindow().setAttributes(lp);
+
+            ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+            lLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
+
 
 
         }
@@ -272,8 +327,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             bulboff.setVisibility(View.INVISIBLE);
             bulbon.setVisibility(View.VISIBLE);
 
+            if (screen==false){
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
+            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}
             //lLayout.setBackgroundResource(R.drawable.nocka);
 
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulbon);
@@ -286,8 +342,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mesecoff.setVisibility(View.INVISIBLE);
             mesecon.setVisibility(View.VISIBLE);
 
+            if (screen==false){
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
+            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}
             //lLayout.setBackgroundResource(R.drawable.nocka);
 
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(mesecon);
@@ -300,8 +357,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             sunoff.setVisibility(View.INVISIBLE);
             sunon.setVisibility(View.VISIBLE);
 
+            if (screen==false){
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
+            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}
             //lLayout.setBackgroundResource(R.drawable.nocka);
 
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(mesecon);
@@ -314,8 +372,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             sunoff.setVisibility(View.INVISIBLE);
             sunon.setVisibility(View.VISIBLE);
 
+            if (screen==false){
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
+            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}
             //lLayout.setBackgroundResource(R.drawable.nocka);
 
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(sunon);
@@ -328,8 +387,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mesecoff.setVisibility(View.INVISIBLE);
             mesecon.setVisibility(View.VISIBLE);
 
+            if (screen==false){
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
+            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}
             //lLayout.setBackgroundResource(R.drawable.nocka);
 
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(mesecon);
@@ -342,8 +402,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             bulboff.setVisibility(View.INVISIBLE);
             bulbon.setVisibility(View.VISIBLE);
 
+            if (screen==false){
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
+            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}
             //lLayout.setBackgroundResource(R.drawable.nocka);
 
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulbon);
@@ -364,11 +425,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
 
 
-            ugasi();
-            strobeoff();
 
 
-            super.onBackPressed();
+
+            finishAffinity();
+
 
 
         }
@@ -378,8 +439,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onDestroy() {
 
 
-            ugasi();
-            strobeoff();
+        ugasi();
+        strobeoff();
 
         super.onDestroy();
 
@@ -475,7 +536,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageView sunon = (ImageView) findViewById(R.id.sunon);
         ImageView sunoff = (ImageView) findViewById(R.id.sunoff);
 
+
         boolean shake = prefs.getBoolean(NOTIF_SHAKE, false);
+        boolean notification = prefs.getBoolean(NOTIF_NOTIF,false);
 
 
         if (bulboff.getVisibility() == View.VISIBLE) {
@@ -503,6 +566,65 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
 
+        if(notification) {
+
+
+
+            String CHANNEL_ID = "my_channel_01";
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
+
+            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), i, 0);
+            mBuilder.setContentTitle("Minimal Flashlight");
+
+            mBuilder.setAutoCancel(false);
+            mBuilder.setOngoing(true);
+            mBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher));
+            mBuilder.setPriority(Notification.PRIORITY_MAX);
+
+            mBuilder.setContentIntent(pendingIntent);
+            mBuilder.setSmallIcon(R.drawable.status);
+            mBuilder.setChannelId(CHANNEL_ID).build();
+
+
+
+            mBuilder.setContentText("Click to go back to app");
+
+
+
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.notify(2, mBuilder.build());
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+      /* Create or update. */
+                NotificationChannel channel = new NotificationChannel("my_channel_01",
+                        "Channel human readable title",
+                        NotificationManager.IMPORTANCE_LOW);
+                channel.setImportance(NotificationManager.IMPORTANCE_LOW);
+                channel.enableVibration(false);
+                channel.enableLights(false);
+
+                channel.setSound(null,null);
+
+
+
+
+
+                notificationManager.createNotificationChannel(channel);
+            }
+
+
+
+        }
+        if (notification==false){
+
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.cancel(02);
+        }
+
+
+
 
 
 
@@ -516,19 +638,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            CameraManager camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+             CameraManager camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+
             String cameraId = null; // Usually back camera is at 0 position.
             try {
                 cameraId = camManager.getCameraIdList()[0];
                 camManager.setTorchMode(cameraId, true);   //Turn ON
             } catch (CameraAccessException e) {
                 e.printStackTrace();
+
             }
         }
 
 
+
+
     }
+
+
 
     public void ugasi() {
 
@@ -537,11 +666,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             String cameraId = null; // Usually back camera is at 0 position.
             try {
                 cameraId = camManager.getCameraIdList()[0];
-                camManager.setTorchMode(cameraId, false);   //Turn ON
+                camManager.setTorchMode(cameraId, false);   //Turn Off
             } catch (CameraAccessException e) {
                 e.printStackTrace();
             }
         }
+
+
 
 
     }
@@ -596,7 +727,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     ugasi();
 
                 }
-            },350);
+            },200);
 
 
 
@@ -606,7 +737,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     strobe();
 
                 }
-            }, 350); }
+            }, 450); }
 
 
 
@@ -628,6 +759,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
         boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
+        boolean screen = prefs.getBoolean(NOTIF_SCREEN, false);
 
         if (sound) {
 
@@ -669,9 +801,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bulboff.setVisibility(View.INVISIBLE);
         bulbon.setVisibility(View.VISIBLE);
 
-        ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-        lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
-        //lLayout.setBackgroundResource(R.drawable.nocka);
+        if (screen==false) {
+            ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
+            //lLayout.setBackgroundResource(R.drawable.nocka);
+        }
 
         Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulbon);
 
@@ -684,7 +818,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
         boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
         boolean strobe = prefs.getBoolean(NOTIF_STROBE, false);
-
+        boolean screen = prefs.getBoolean(NOTIF_SCREEN, false);
 
         if (sound) {
 
@@ -722,8 +856,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bulboff.setVisibility(View.VISIBLE);
         bulbon.setVisibility(View.INVISIBLE);
 
-        ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-        lLayout.setBackgroundColor(Color.parseColor("#332b2d"));
+        if (screen==false) {
+            ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+            lLayout.setBackgroundColor(Color.parseColor("#332b2d"));
+        }
 
         Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulboff);
 
@@ -742,6 +878,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
         String END_SOUNDS = prefs.getString("PREF_LIST_SOUNDS", "1");
         boolean strobe = prefs.getBoolean(NOTIF_STROBE, false);
+        boolean screen = prefs.getBoolean(NOTIF_SCREEN, false);
         //if (END_SOUNDS.matches("3")){
 
 
@@ -800,8 +937,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mesecoff.setVisibility(View.VISIBLE);
         mesecon.setVisibility(View.INVISIBLE);
 
-        ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-        lLayout.setBackgroundColor(Color.parseColor("#332b2d"));
+        if (screen==false) {
+            ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+            lLayout.setBackgroundColor(Color.parseColor("#332b2d"));
+        }
 
         Technique.WAVE.getComposer().duration(650).delay(0).playOn(mesecoff);
 
@@ -813,6 +952,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
         boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
+        boolean screen = prefs.getBoolean(NOTIF_SCREEN, false);
         String END_SOUNDS = prefs.getString("PREF_LIST_SOUNDS", "1");
         //if (END_SOUNDS.matches("3")){
 
@@ -876,8 +1016,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mesecoff.setVisibility(View.INVISIBLE);
         mesecon.setVisibility(View.VISIBLE);
 
-        ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-        lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
+        if (screen==false) {
+            ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
+        }
         //lLayout.setBackgroundResource(R.drawable.pustinja);
 
         Technique.WAVE.getComposer().duration(650).delay(0).playOn(mesecon);
@@ -892,6 +1034,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
         boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
+        boolean screen = prefs.getBoolean(NOTIF_SCREEN, false);
         String END_SOUNDS = prefs.getString("PREF_LIST_SOUNDS", "1");
         boolean strobe = prefs.getBoolean(NOTIF_STROBE, false);
 
@@ -954,8 +1097,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         sunoff.setVisibility(View.VISIBLE);
         sunon.setVisibility(View.INVISIBLE);
 
-        ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-        lLayout.setBackgroundColor(Color.parseColor("#332b2d"));
+        if (screen==false) {
+            ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+            lLayout.setBackgroundColor(Color.parseColor("#332b2d"));
+        }
 
         Technique.ROTATE.getComposer().duration(650).delay(0).playOn(sunoff);
 
@@ -967,6 +1112,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
         boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
+        boolean screen = prefs.getBoolean(NOTIF_SCREEN, false);
         String END_SOUNDS = prefs.getString("PREF_LIST_SOUNDS", "1");
         //if (END_SOUNDS.matches("3")){
 
@@ -1034,8 +1180,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         sunoff.setVisibility(View.INVISIBLE);
         sunon.setVisibility(View.VISIBLE);
 
-        ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-        lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
+        if (screen==false) {
+            ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
+        }
         //lLayout.setBackgroundResource(R.drawable.nocka);
 
 
@@ -1087,20 +1235,307 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onPause() {
         // Add the following line to unregister the Sensor Manager onPause
         mSensorManager.unregisterListener(mShakeDetector);
+
         super.onPause();
     }
 
+    /*@Override
+    public void onStop() {
+        // Add the following line to unregister the Sensor Manager onPause
+        mSensorManager.unregisterListener(mShakeDetector);
+        super.onStop();
+    }*/
+
     private void handleShakeEvent(int count) {
+
+        ImageView bulbon = (ImageView) findViewById(R.id.bulbON);
+        ImageView bulboff = (ImageView) findViewById(R.id.bulbOFF);
+        ImageView mesecon = (ImageView) findViewById(R.id.mesecon);
+        ImageView mesecoff = (ImageView) findViewById(R.id.mesecoff);
+        ImageView sunon = (ImageView) findViewById(R.id.sunon);
+        ImageView sunoff = (ImageView) findViewById(R.id.sunoff);
+
+        //provera podesenja
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean strobe = prefs.getBoolean(NOTIF_STROBE, false);
+        boolean shake = prefs.getBoolean(NOTIF_SHAKE, false);
+        boolean screen = prefs.getBoolean(NOTIF_SCREEN, false);
+        String END_POINT = prefs.getString("PREF_LIST", "1");
+        String PREF_LIST_SHAKE = prefs.getString("PREF_LIST_SHAKE", "3");
+
+        if (PREF_LIST_SHAKE.matches("1")&&strobe&&END_POINT.matches("1")) {
+
+            if (bulboff.getVisibility() == View.VISIBLE) {
+
+            strobe();
+            bulboff.setVisibility(View.INVISIBLE);
+            bulbon.setVisibility(View.VISIBLE);
+
+            mesecon.setVisibility(View.INVISIBLE);
+            mesecoff.setVisibility(View.INVISIBLE);
+
+            sunon.setVisibility(View.INVISIBLE);
+            sunoff.setVisibility(View.INVISIBLE);
+
+            Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulbon);
+
+                if (screen==false){
+                ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+                lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}
+
+            }
+
+
+        }
+
+        if (PREF_LIST_SHAKE.matches("1")&&strobe&&END_POINT.matches("2")) {
+
+            if (mesecoff.getVisibility() == View.VISIBLE) {
+
+
+            strobe();
+            bulboff.setVisibility(View.INVISIBLE);
+            bulbon.setVisibility(View.INVISIBLE);
+
+            mesecon.setVisibility(View.VISIBLE);
+            mesecoff.setVisibility(View.INVISIBLE);
+
+            sunon.setVisibility(View.INVISIBLE);
+            sunoff.setVisibility(View.INVISIBLE);
+
+            Technique.WAVE.getComposer().duration(650).delay(0).playOn(mesecon);
+
+                if (screen==false){
+                ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+                lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}}
+
+
+        }
+
+        if (PREF_LIST_SHAKE.matches("1")&&strobe&&END_POINT.matches("3")) {
+
+            if (sunoff.getVisibility() == View.VISIBLE) {
+
+            strobe();
+            bulboff.setVisibility(View.INVISIBLE);
+            bulbon.setVisibility(View.INVISIBLE);
+
+            mesecon.setVisibility(View.INVISIBLE);
+            mesecoff.setVisibility(View.INVISIBLE);
+
+            sunon.setVisibility(View.VISIBLE);
+            sunoff.setVisibility(View.INVISIBLE);
+            Technique.ROTATE.getComposer().duration(650).delay(0).playOn(sunon);
+                if (screen==false){
+                ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+                lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}}
+
+
+        }
+
+        if (PREF_LIST_SHAKE.matches("1")&&strobe==false&&END_POINT.matches("1")) {
+
+            upali();
+            bulboff.setVisibility(View.INVISIBLE);
+            bulbon.setVisibility(View.VISIBLE);
+
+            mesecon.setVisibility(View.INVISIBLE);
+            mesecoff.setVisibility(View.INVISIBLE);
+
+            sunon.setVisibility(View.INVISIBLE);
+            sunoff.setVisibility(View.INVISIBLE);
+
+            Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulbon);
+
+            if (screen==false){
+            ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}
+
+        }
+
+        if (PREF_LIST_SHAKE.matches("1")&&strobe==false&&END_POINT.matches("2")) {
+
+            upali();
+            bulboff.setVisibility(View.INVISIBLE);
+            bulbon.setVisibility(View.INVISIBLE);
+
+            mesecon.setVisibility(View.VISIBLE);
+            mesecoff.setVisibility(View.INVISIBLE);
+
+            sunon.setVisibility(View.INVISIBLE);
+            sunoff.setVisibility(View.INVISIBLE);
+
+            Technique.WAVE.getComposer().duration(650).delay(0).playOn(mesecon);
+            if (screen==false){
+            ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}
+
+        }
+
+        if (PREF_LIST_SHAKE.matches("1")&&strobe==false&&END_POINT.matches("3")) {
+
+            upali();
+            bulboff.setVisibility(View.INVISIBLE);
+            bulbon.setVisibility(View.INVISIBLE);
+
+            mesecon.setVisibility(View.INVISIBLE);
+            mesecoff.setVisibility(View.INVISIBLE);
+
+            sunon.setVisibility(View.VISIBLE);
+            sunoff.setVisibility(View.INVISIBLE);
+            Technique.ROTATE.getComposer().duration(650).delay(0).playOn(sunon);
+            if (screen==false){
+            ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}
+
+        }
+
+        if (PREF_LIST_SHAKE.matches("2")) {
+
+            if (bulbon.getVisibility() == View.VISIBLE) {
+
+                ugasi();
+                strobeoff();
+                bulboff.setVisibility(View.VISIBLE);
+                bulbon.setVisibility(View.INVISIBLE);
+
+                mesecon.setVisibility(View.INVISIBLE);
+                mesecoff.setVisibility(View.INVISIBLE);
+
+                sunon.setVisibility(View.INVISIBLE);
+                sunoff.setVisibility(View.INVISIBLE);
+
+                Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulboff);
+                if (screen==false){
+                ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+                lLayout.setBackgroundColor(Color.parseColor("#332b2d"));}}
+
+            if (mesecon.getVisibility() == View.VISIBLE) {
+
+                ugasi();
+                strobeoff();
+                bulboff.setVisibility(View.INVISIBLE);
+                bulbon.setVisibility(View.INVISIBLE);
+
+                mesecon.setVisibility(View.INVISIBLE);
+                mesecoff.setVisibility(View.VISIBLE);
+
+                sunon.setVisibility(View.INVISIBLE);
+                sunoff.setVisibility(View.INVISIBLE);
+
+                Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(mesecoff);
+                if (screen==false){
+                ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+                lLayout.setBackgroundColor(Color.parseColor("#332b2d"));}}
+
+            if (sunon.getVisibility() == View.VISIBLE) {
+
+                ugasi();
+                strobeoff();
+                bulboff.setVisibility(View.INVISIBLE);
+                bulbon.setVisibility(View.INVISIBLE);
+
+                mesecon.setVisibility(View.INVISIBLE);
+                mesecoff.setVisibility(View.INVISIBLE);
+
+                sunon.setVisibility(View.INVISIBLE);
+                sunoff.setVisibility(View.VISIBLE);
+
+                Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(sunoff);
+                if (screen==false){
+                ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
+                lLayout.setBackgroundColor(Color.parseColor("#332b2d"));}}
+
+
+
+
+        }
+
+
+        if (PREF_LIST_SHAKE.matches("3")) {
+
+           ubijsve();
+        }
+
+        if (PREF_LIST_SHAKE.matches("4")) {
+
+            startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+        }
+
+
+
+
+    }
+
+    public void ubijsve(){
 
         ugasi();
         strobeoff();
-        finish();
-
-      //Toast.makeText(this,"SHAKED",Toast.LENGTH_SHORT).show();
+        finishAffinity();
 
     }
+
+   /* @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public boolean checkPermission()
+    {
+        int currentAPIVersion = Build.VERSION.SDK_INT;
+        if(currentAPIVersion>=android.os.Build.VERSION_CODES.M)
+        {
+            if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) MainActivity.this, Manifest.permission.CAMERA)) {
+                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(MainActivity.this);
+                    alertBuilder.setCancelable(true);
+                    alertBuilder.setTitle("Permission necessary");
+                    alertBuilder.setMessage("Camera permission requiered!");
+                    alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions((Activity)MainActivity.this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_WRITE_CALENDAR);
+                        }
+                    });
+                    AlertDialog alert = alertBuilder.create();
+                    alert.show();
+                } else {
+                    ActivityCompat.requestPermissions((Activity)MainActivity.this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_WRITE_CALENDAR);
+                }
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_WRITE_CALENDAR:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    ugasi();
+                    strobeoff();
+                } else {
+
+                    finishAffinity();
+                }
+                break;
+        }
+    }*/
+
+
+
+
 
 
 
 }
+
+
+
+
+
+
+
+
+
+
 

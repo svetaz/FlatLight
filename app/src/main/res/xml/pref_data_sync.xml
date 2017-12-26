@@ -9,12 +9,22 @@
 
 
     <PreferenceCategory
+        android:title="Settings"></PreferenceCategory>
+
+<PreferenceScreen
+    android:title="Lights"
+    android:icon="@drawable/bulb"
+
+    >
+
+    <PreferenceCategory
         android:title="Lights">
+
 
         <ListPreference
             android:key="PREF_LIST"
             android:title="Light source"
-            android:icon="@drawable/source"
+            android:icon="@drawable/bulb"
             android:summary="%s"
             android:entries="@array/listentries"
             android:entryValues="@array/listvalues"
@@ -28,13 +38,7 @@
             android:summaryOff="app will start with lights off"
             android:title="Starting lights" />
 
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="notif_screen"
-            android:icon="@drawable/screen"
-            android:summaryOn="screen brightness set to max to help you find your way in the darkness"
-            android:summaryOff="screen brightness wont be changed"
-            android:title="Use screen as flashlight" />
+
 
         <SwitchPreference
 
@@ -48,7 +52,7 @@
         <ListPreference
             android:key="PREF_LIST_STROBE"
             android:title="Blinking rate"
-            android:icon="@drawable/speed"
+
             android:dependency="notif_strobe"
             android:summary="%s"
             android:entries="@array/listentriesstrobe"
@@ -60,9 +64,46 @@
 
 
     </PreferenceCategory>
+</PreferenceScreen>
+
+    <PreferenceScreen
+        android:title="Screen"
+        android:icon="@drawable/screen"
+        >
+
+        <PreferenceCategory
+            android:title="Screen">
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="notif_screen"
+        android:icon="@drawable/screen"
+       android:summary="max brightness and white screen"
+        android:title="Use screen as flashlight" />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="notif_on"
+        android:icon="@drawable/source"
+        android:summary="screen will never go to sleep while app is on"
+        android:title="Keep screen awake" />
+
+        </PreferenceCategory>
+
+    </PreferenceScreen>
+
+
+    <PreferenceScreen
+        android:title="Motion"
+        android:icon="@drawable/shake">
 
     <PreferenceCategory
-        android:title="Motion">
+        android:title="Motion"
+        >
+
+        <ListPreference
+            android:title="These options require accelerometer sensor"
+            android:enabled="false"/>
 
 
 
@@ -72,18 +113,29 @@
             android:defaultValue="false"
             android:key="notif_shake"
             android:icon="@drawable/shake"
-            android:summaryOn="shake listener is on"
-            android:summaryOff="shake listener is off"
-            android:title="Shake to close the app" />
+
+            android:title="Shake phone for action" />
+
+        <ListPreference
+            android:key="PREF_LIST_SHAKE"
+            android:title="Choose action (in app)"
+
+            android:summary="%s"
+            android:dependency="notif_shake"
+            android:entries="@array/listentriesshake"
+            android:entryValues="@array/listvaluesshake"
+            android:defaultValue="3"/>
 
 
     </PreferenceCategory>
 
 
+</PreferenceScreen>
 
 
-
-
+    <PreferenceScreen
+        android:title="Sounds"
+        android:icon="@drawable/sound">
 
 
     <PreferenceCategory
@@ -104,7 +156,7 @@
         <ListPreference
             android:key="PREF_LIST_SOUNDS"
             android:title="Light switch tone"
-            android:icon="@drawable/music"
+
             android:summary="%s"
             android:dependency="notif_sound"
             android:entries="@array/listentriessounds"
@@ -112,8 +164,22 @@
             android:defaultValue="1"/>
     </PreferenceCategory>
 
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:title="Misc"
+        android:icon="@drawable/other">
+
     <PreferenceCategory
-        android:title="Other">
+        android:title="Misc">
+
+        <SwitchPreference
+
+            android:defaultValue="false"
+            android:key="notif_notif"
+            android:icon="@drawable/notif"
+            android:summary="if notification is not shown please restart the app"
+            android:title="Show ongoing notification" />
 
         <SwitchPreference
 
@@ -123,13 +189,23 @@
 
             android:title="Show tips on startup" />
 
+        <SwitchPreference
+
+            android:defaultValue="false"
+            android:key="notif_fullscreen"
+            android:icon="@drawable/full"
+
+            android:title="Start app in fullscreen mode" />
+
+
+
 
 
     </PreferenceCategory>
 
 
-
-
-
+</PreferenceScreen>
 
 </PreferenceScreen>
+
+
