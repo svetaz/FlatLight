@@ -13,7 +13,7 @@
 
 <PreferenceScreen
     android:title="Lights"
-    android:icon="@drawable/bulb"
+
 
     >
 
@@ -68,7 +68,7 @@
 
     <PreferenceScreen
         android:title="Screen"
-        android:icon="@drawable/screen"
+
         >
 
         <PreferenceCategory
@@ -95,7 +95,7 @@
 
     <PreferenceScreen
         android:title="Motion"
-        android:icon="@drawable/shake">
+        >
 
     <PreferenceCategory
         android:title="Motion"
@@ -135,7 +135,7 @@
 
     <PreferenceScreen
         android:title="Sounds"
-        android:icon="@drawable/sound">
+       >
 
 
     <PreferenceCategory
@@ -168,7 +168,7 @@
 
     <PreferenceScreen
         android:title="Misc"
-        android:icon="@drawable/other">
+       >
 
     <PreferenceCategory
         android:title="Misc">

@@ -7,7 +7,7 @@
         <bitmap
             android:gravity="center"
 
-            android:src="@mipmap/sijalica"
+            android:src="@mipmap/ic_launcher_final"
 
             />
     </item>

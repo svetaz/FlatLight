@@ -14,6 +14,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.BitmapFactory;
 import android.graphics.Camera;
 import android.graphics.Color;
@@ -133,6 +135,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
+
+
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +145,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+
 
 
 
@@ -178,6 +185,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -193,7 +201,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageView sunon = (ImageView) findViewById(R.id.sunon);
         ImageView sunoff = (ImageView) findViewById(R.id.sunoff);
 
+
         ConstraintLayout cl = (ConstraintLayout)findViewById(R.id.layout);
+
 
 
 
@@ -202,7 +212,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //provera podesenja
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
         boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
         boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
         boolean strobe = prefs.getBoolean(NOTIF_STROBE, false);
@@ -212,7 +221,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean on = prefs.getBoolean(NOTIF_ON, false);
         boolean fullscreen = prefs.getBoolean(NOTIF_FULLSCREEN, false);
         boolean notification = prefs.getBoolean(NOTIF_NOTIF, false);
-
         String END_POINT = prefs.getString("PREF_LIST", "1");
 
 
@@ -330,7 +338,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             if (screen==false){
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}
+            lLayout.setBackgroundColor(Color.parseColor("#443d71"));}
             //lLayout.setBackgroundResource(R.drawable.nocka);
 
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulbon);
@@ -345,7 +353,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             if (screen==false){
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}
+            lLayout.setBackgroundColor(Color.parseColor("#443d71"));}
             //lLayout.setBackgroundResource(R.drawable.nocka);
 
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(mesecon);
@@ -360,7 +368,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             if (screen==false){
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}
+            lLayout.setBackgroundColor(Color.parseColor("#443d71"));}
             //lLayout.setBackgroundResource(R.drawable.nocka);
 
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(mesecon);
@@ -375,7 +383,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             if (screen==false){
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}
+            lLayout.setBackgroundColor(Color.parseColor("#443d71"));}
             //lLayout.setBackgroundResource(R.drawable.nocka);
 
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(sunon);
@@ -390,7 +398,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             if (screen==false){
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}
+            lLayout.setBackgroundColor(Color.parseColor("#443d71"));}
             //lLayout.setBackgroundResource(R.drawable.nocka);
 
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(mesecon);
@@ -405,7 +413,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             if (screen==false){
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}
+            lLayout.setBackgroundColor(Color.parseColor("#443d71"));}
             //lLayout.setBackgroundResource(R.drawable.nocka);
 
             Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulbon);
@@ -460,8 +468,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             new MaterialStyledDialog.Builder(this)
                     .setTitle("About")
                     .setDescription("• A simple material design app that uses phone flashlight\n• No ads\n• Tried to keep it as minimal as possible,without any fancy buttons or useless options\n• There are 3 light source themes at the moment and i will try to add more in the future\n• Feel free to send me any kind of feedback,both positive and negative and tell me what features would you like to see in this app\n")
-                    .setHeaderDrawable(R.drawable.noc).withDialogAnimation(true)
-                    .setIcon(R.mipmap.ic_launcher)
+                    .setHeaderDrawable(R.drawable.nocka).withDialogAnimation(true)
+                    .setIcon(R.mipmap.logo)
                     .setPositiveText("OK").onPositive(new MaterialDialog.SingleButtonCallback() {
 
                 @Override
@@ -543,17 +551,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         if (bulboff.getVisibility() == View.VISIBLE) {
-            Technique.BOUNCE.getComposer().duration(850).delay(0).playOn(bulboff);
+            Technique.BOUNCE.getComposer().duration(1000).delay(0).playOn(bulboff);
         } else if (bulbon.getVisibility() == View.VISIBLE) {
-            Technique.BOUNCE.getComposer().duration(850).delay(0).playOn(bulbon);
+            Technique.BOUNCE.getComposer().duration(1000).delay(0).playOn(bulbon);
         } else if (mesecoff.getVisibility() == View.VISIBLE) {
-            Technique.BOUNCE.getComposer().duration(850).delay(0).playOn(mesecoff);
+            Technique.BOUNCE.getComposer().duration(1000).delay(0).playOn(mesecoff);
         } else if (mesecon.getVisibility() == View.VISIBLE) {
-            Technique.BOUNCE.getComposer().duration(850).delay(0).playOn(mesecon);
+            Technique.BOUNCE.getComposer().duration(1000).delay(0).playOn(mesecon);
         } else if (sunoff.getVisibility() == View.VISIBLE) {
-            Technique.BOUNCE.getComposer().duration(850).delay(0).playOn(sunoff);
+            Technique.BOUNCE.getComposer().duration(1000).delay(0).playOn(sunoff);
         } else if (sunon.getVisibility() == View.VISIBLE) {
-            Technique.BOUNCE.getComposer().duration(850).delay(0).playOn(sunon);
+            Technique.BOUNCE.getComposer().duration(1000).delay(0).playOn(sunon);
         }
 
 
@@ -804,7 +812,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (screen==false) {
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
+            lLayout.setBackgroundColor(Color.parseColor("#443d71"));
             //lLayout.setBackgroundResource(R.drawable.nocka);
         }
 
@@ -859,7 +867,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (screen==false) {
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#332b2d"));
+            lLayout.setBackgroundColor(Color.parseColor("#262545"));
         }
 
         Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulboff);
@@ -940,7 +948,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (screen==false) {
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#332b2d"));
+            lLayout.setBackgroundColor(Color.parseColor("#262545"));
         }
 
         Technique.WAVE.getComposer().duration(650).delay(0).playOn(mesecoff);
@@ -1019,7 +1027,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (screen==false) {
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
+            lLayout.setBackgroundColor(Color.parseColor("#443d71"));
         }
         //lLayout.setBackgroundResource(R.drawable.pustinja);
 
@@ -1100,7 +1108,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (screen==false) {
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#332b2d"));
+            lLayout.setBackgroundColor(Color.parseColor("#262545"));
         }
 
         Technique.ROTATE.getComposer().duration(650).delay(0).playOn(sunoff);
@@ -1183,7 +1191,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (screen==false) {
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));
+            lLayout.setBackgroundColor(Color.parseColor("#443d71"));
         }
         //lLayout.setBackgroundResource(R.drawable.nocka);
 
@@ -1282,7 +1290,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 if (screen==false){
                 ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-                lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}
+                lLayout.setBackgroundColor(Color.parseColor("#443d71"));}
 
             }
 
@@ -1308,7 +1316,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 if (screen==false){
                 ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-                lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}}
+                lLayout.setBackgroundColor(Color.parseColor("#443d71"));}}
 
 
         }
@@ -1329,7 +1337,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Technique.ROTATE.getComposer().duration(650).delay(0).playOn(sunon);
                 if (screen==false){
                 ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-                lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}}
+                lLayout.setBackgroundColor(Color.parseColor("#443d71"));}}
 
 
         }
@@ -1350,7 +1358,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             if (screen==false){
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}
+            lLayout.setBackgroundColor(Color.parseColor("#443d71"));}
 
         }
 
@@ -1369,7 +1377,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Technique.WAVE.getComposer().duration(650).delay(0).playOn(mesecon);
             if (screen==false){
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}
+            lLayout.setBackgroundColor(Color.parseColor("#443d71"));}
 
         }
 
@@ -1387,7 +1395,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Technique.ROTATE.getComposer().duration(650).delay(0).playOn(sunon);
             if (screen==false){
             ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-            lLayout.setBackgroundColor(Color.parseColor("#FF473D40"));}
+            lLayout.setBackgroundColor(Color.parseColor("#443d71"));}
 
         }
 
@@ -1409,7 +1417,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulboff);
                 if (screen==false){
                 ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-                lLayout.setBackgroundColor(Color.parseColor("#332b2d"));}}
+                lLayout.setBackgroundColor(Color.parseColor("#262545"));}}
 
             if (mesecon.getVisibility() == View.VISIBLE) {
 
@@ -1427,7 +1435,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(mesecoff);
                 if (screen==false){
                 ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-                lLayout.setBackgroundColor(Color.parseColor("#332b2d"));}}
+                lLayout.setBackgroundColor(Color.parseColor("#262545"));}}
 
             if (sunon.getVisibility() == View.VISIBLE) {
 
@@ -1445,7 +1453,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(sunoff);
                 if (screen==false){
                 ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-                lLayout.setBackgroundColor(Color.parseColor("#332b2d"));}}
+                lLayout.setBackgroundColor(Color.parseColor("#262545"));}}
 
 
 

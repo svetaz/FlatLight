@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#332b2d"
+    android:background="#2f2d52"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="studio.kucuela.lightbulb.MainActivity"
     tools:showIn="@layout/app_bar_main">
