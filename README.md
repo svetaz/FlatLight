@@ -1,5 +1,7 @@
 # Minimal Flashlight
-not working on some M and N devices, permission issues*
+
+*Min SDK 23(M)*
+*Some devices working on O/M issues resolved.Should work ok now*
 
 Apk link: https://app.box.com/v/minimalflashlight
 
