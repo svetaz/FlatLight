@@ -8,14 +8,9 @@
 
 
 
-    <PreferenceCategory
-        android:title="Settings"></PreferenceCategory>
-
-<PreferenceScreen
-    android:title="Lights"
 
 
-    >
+
 
     <PreferenceCategory
         android:title="Lights">
@@ -25,6 +20,7 @@
             android:key="PREF_LIST"
             android:title="Light source"
             android:icon="@drawable/bulb"
+
             android:summary="%s"
             android:entries="@array/listentries"
             android:entryValues="@array/listvalues"
@@ -52,7 +48,7 @@
         <ListPreference
             android:key="PREF_LIST_STROBE"
             android:title="Blinking rate"
-
+            android:icon="@drawable/speed"
             android:dependency="notif_strobe"
             android:summary="%s"
             android:entries="@array/listentriesstrobe"
@@ -64,12 +60,9 @@
 
 
     </PreferenceCategory>
-</PreferenceScreen>
 
-    <PreferenceScreen
-        android:title="Screen"
 
-        >
+
 
         <PreferenceCategory
             android:title="Screen">
@@ -90,12 +83,10 @@
 
         </PreferenceCategory>
 
-    </PreferenceScreen>
 
 
-    <PreferenceScreen
-        android:title="Motion"
-        >
+
+
 
     <PreferenceCategory
         android:title="Motion"
@@ -118,24 +109,32 @@
 
         <ListPreference
             android:key="PREF_LIST_SHAKE"
-            android:title="Choose action (in app)"
-
+            android:title="Choose action (while in app)"
+            android:icon="@drawable/a"
             android:summary="%s"
             android:dependency="notif_shake"
             android:entries="@array/listentriesshake"
             android:entryValues="@array/listvaluesshake"
             android:defaultValue="3"/>
 
+        <ListPreference
+            android:key="PREF_LIST_SHAKE_SENSITIVITY"
+            android:title="Choose shake sensitivity"
+            android:icon="@drawable/sense"
+            android:summary="%s"
+            android:dependency="notif_shake"
+            android:entries="@array/listentriesshakesensitivity"
+            android:entryValues="@array/listvaluesshakesensitivity"
+            android:defaultValue="2"/>
+
 
     </PreferenceCategory>
 
 
-</PreferenceScreen>
 
 
-    <PreferenceScreen
-        android:title="Sounds"
-       >
+
+
 
 
     <PreferenceCategory
@@ -156,7 +155,7 @@
         <ListPreference
             android:key="PREF_LIST_SOUNDS"
             android:title="Light switch tone"
-
+            android:icon="@drawable/music"
             android:summary="%s"
             android:dependency="notif_sound"
             android:entries="@array/listentriessounds"
@@ -164,11 +163,7 @@
             android:defaultValue="1"/>
     </PreferenceCategory>
 
-    </PreferenceScreen>
 
-    <PreferenceScreen
-        android:title="Misc"
-       >
 
     <PreferenceCategory
         android:title="Misc">
@@ -187,7 +182,7 @@
             android:key="notif_tips"
             android:icon="@drawable/snack"
 
-            android:title="Show tips on startup" />
+            android:title="Show help on startup" />
 
         <SwitchPreference
 
@@ -204,7 +199,7 @@
     </PreferenceCategory>
 
 
-</PreferenceScreen>
+
 
 </PreferenceScreen>
 

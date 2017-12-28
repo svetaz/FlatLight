@@ -1,4 +1,4 @@
-package studio.kucuela.lightbulb;
+package studio.kucuela.lightbulb.Settings;
 
 
 import android.content.res.Configuration;

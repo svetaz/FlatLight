@@ -1,4 +1,4 @@
-package studio.kucuela.lightbulb;
+package studio.kucuela.lightbulb.Settings;
 
 
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
 import studio.kucuela.lightbulb.MainActivity;
+import studio.kucuela.lightbulb.R;
 
 
 /**

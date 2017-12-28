@@ -35,7 +35,7 @@
         </activity>
 
         <activity
-            android:name=".SplashActivity"
+            android:name=".Splash.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,7 +46,7 @@
 
 
         <activity
-            android:name=".SettingsActivity"
+            android:name=".Settings.SettingsActivity"
             android:label="Settings">
         </activity>
     </application>

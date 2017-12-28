@@ -1,58 +1,30 @@
 package studio.kucuela.lightbulb;
 
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.graphics.BitmapFactory;
-import android.graphics.Camera;
 import android.graphics.Color;
-import android.graphics.SurfaceTexture;
-import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
 import android.media.MediaPlayer;
-import android.media.RingtoneManager;
 import android.net.Uri;
-import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.preference.ListPreference;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.view.SupportActionModeWrapper;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -60,10 +32,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -72,36 +42,16 @@ import com.jrummyapps.android.animations.Technique;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 
-import android.app.Activity;
-
-import android.os.Bundle;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
 
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.Executable;
-import java.security.Policy;
-import java.time.temporal.ValueRange;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 
-import android.hardware.Sensor;
-
-import android.hardware.SensorEvent;
-
-import android.hardware.SensorEventListener;
-
-import android.hardware.SensorManager;
+import studio.kucuela.lightbulb.Settings.SettingsActivity;
+import studio.kucuela.lightbulb.ShakeListeners.ShakeEventListener;
+import studio.kucuela.lightbulb.ShakeListeners.ShakeEventListener2;
+import studio.kucuela.lightbulb.ShakeListeners.ShakeEventListener3;
 
 
 
@@ -112,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SharedPreferences prefs;
 
 
-    public static final int MY_PERMISSIONS_REQUEST_WRITE_CALENDAR = 123;
+
 
     public static String NOTIF_AUTO = "notif_auto";
     public static String NOTIF_SOUND = "notif_sound";
@@ -129,11 +79,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     final Handler handler = new Handler();
     Handler handler2 = new Handler();
 
+
+
     private SensorManager mSensorManager;
-    private Sensor mAccelerometer;
-    private ShakeDetector mShakeDetector;
+    private ShakeEventListener mSensorListener;
 
+    private SensorManager mSensorManager2;
+    private ShakeEventListener2 mSensorListener2;
 
+    private SensorManager mSensorManager3;
+    private ShakeEventListener3 mSensorListener3;
 
 
 
@@ -152,8 +107,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
+
+
+
+
+
+
 // ShakeDetector initialization
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        /*mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager
                 .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mShakeDetector = new ShakeDetector();
@@ -161,14 +122,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onShake(int count) {
-				/*
+				*//*
 				 * The following method, "handleShakeEvent(count):" is a stub //
 				 * method you would use to setup whatever you want done once the
 				 * device has been shook.
-				 */
+				 *//*
                 handleShakeEvent(count);
             }
-        });
+        });*/
 
 
             //PERMISSIONS
@@ -222,6 +183,55 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean fullscreen = prefs.getBoolean(NOTIF_FULLSCREEN, false);
         boolean notification = prefs.getBoolean(NOTIF_NOTIF, false);
         String END_POINT = prefs.getString("PREF_LIST", "1");
+        String PREF_LIST_SHAKE_SENSITIVITY = prefs.getString("PREF_LIST_SHAKE_SENSITIVITY", "2");
+
+        if (PREF_LIST_SHAKE_SENSITIVITY.matches("2")){
+
+            mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+            mSensorListener = new ShakeEventListener();
+
+            mSensorListener.setOnShakeListener(new ShakeEventListener.OnShakeListener() {
+
+                public void onShake() {
+
+                    handleShakeEvent();
+
+                }
+            });
+
+        }
+
+        if (PREF_LIST_SHAKE_SENSITIVITY.matches("1")){
+
+            mSensorManager2 = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+            mSensorListener2 = new ShakeEventListener2();
+
+            mSensorListener2.setOnShakeListener(new ShakeEventListener2.OnShakeListener() {
+
+                public void onShake() {
+
+                    handleShakeEvent();
+
+                }
+            });
+
+        }
+
+        if (PREF_LIST_SHAKE_SENSITIVITY.matches("3")){
+
+            mSensorManager3 = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+            mSensorListener3 = new ShakeEventListener3();
+
+            mSensorListener3.setOnShakeListener(new ShakeEventListener3.OnShakeListener() {
+
+                public void onShake() {
+
+                    handleShakeEvent();
+
+                }
+            });
+
+        }
 
 
 
@@ -243,20 +253,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-            final String[] r1 = new String[] {"Tip: You can change app's light source","Tip: You can start the app with lights on","Tip: You can use your screen as second flashlight",
-            "Tip: You can turn on blinking lights for signaling","Tip: You can shake your phone for various actions","Tip: You can change light switch sound",
-                    "Tip: You can set your screen never to turn off","Tip: You can display the app in fullscreen","Tip: You can set ongoing notification and use it as shortcut"};
+            final String[] r1 = new String[] {"Tip: You can change app's light source","Tip: You can start the app with lights on","Tip: Use your screen as second flashlight",
+            "Tip: Turn on blinking lights for signaling","Tip: Shake your phone for various actions","Tip: Change light switch sounds",
+                    "Tip: Set your screen never to turn off","Tip: Display the app in fullscreen","Tip: Set ongoing notification and use it as shortcut"};
             final int randomMsgIndex = new Random().nextInt(r1.length);
 
             final Snackbar snackbar = Snackbar.make(cl,r1[randomMsgIndex], Snackbar.LENGTH_LONG);
 
             // Set an action on it, and a handler
-            snackbar.setAction("SETTINGS", new View.OnClickListener() {
+            snackbar.setAction("TURN OFF HELP", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+
+
+                    SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit();
+                    prefs.putBoolean("notif_tips", false);
+                    prefs.commit();
+                    startActivity(new Intent(MainActivity.this, MainActivity.class));
+
                 }
             });
+
 
 
 
@@ -548,6 +565,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         boolean shake = prefs.getBoolean(NOTIF_SHAKE, false);
         boolean notification = prefs.getBoolean(NOTIF_NOTIF,false);
+        String PREF_LIST_SHAKE_SENSITIVITY = prefs.getString("PREF_LIST_SHAKE_SENSITIVITY", "2");
 
 
         if (bulboff.getVisibility() == View.VISIBLE) {
@@ -567,13 +585,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 // Add the following line to register the Session Manager Listener onResume
 
+            if (shake&&PREF_LIST_SHAKE_SENSITIVITY.matches("2")) {
+                mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_UI);
+            }
 
-        if(shake){
-
-            mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
-
-
+        if (shake&&PREF_LIST_SHAKE_SENSITIVITY.matches("1")) {
+            mSensorManager2.registerListener(mSensorListener2, mSensorManager2.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_UI);
         }
+
+        if (shake&&PREF_LIST_SHAKE_SENSITIVITY.matches("3")) {
+            mSensorManager3.registerListener(mSensorListener3, mSensorManager3.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_UI);
+        }
+
+
+
+
+
+
 
         if(notification) {
 
@@ -1242,20 +1270,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onPause() {
+
+
         // Add the following line to unregister the Sensor Manager onPause
-        mSensorManager.unregisterListener(mShakeDetector);
+        //provera podesenja
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean shake = prefs.getBoolean(NOTIF_SHAKE, false);
+        String PREF_LIST_SHAKE_SENSITIVITY = prefs.getString("PREF_LIST_SHAKE_SENSITIVITY", "2");
+
+
+        if (shake&&PREF_LIST_SHAKE_SENSITIVITY.matches("2")) {
+            mSensorManager.unregisterListener(mSensorListener);
+        }
+
+        if (shake&&PREF_LIST_SHAKE_SENSITIVITY.matches("1")) {
+            mSensorManager2.unregisterListener(mSensorListener2);
+        }
+
+        if (shake&&PREF_LIST_SHAKE_SENSITIVITY.matches("3")) {
+            mSensorManager3.unregisterListener(mSensorListener3);
+        }
+
 
         super.onPause();
     }
 
-    /*@Override
-    public void onStop() {
-        // Add the following line to unregister the Sensor Manager onPause
-        mSensorManager.unregisterListener(mShakeDetector);
-        super.onStop();
-    }*/
 
-    private void handleShakeEvent(int count) {
+
+    private void handleShakeEvent() {
 
         ImageView bulbon = (ImageView) findViewById(R.id.bulbON);
         ImageView bulboff = (ImageView) findViewById(R.id.bulbOFF);

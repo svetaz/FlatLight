@@ -62,6 +62,23 @@
 
     </string-array>
 
+    <string-array name="listentriesshakesensitivity">
+
+        <item>Low (shake it stronger)</item>
+        <item>Normal (shake it as usual)</item>
+        <item>High (go easy)</item>
+
+
+
+    </string-array>
+    <string-array name="listvaluesshakesensitivity">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+
+
+    </string-array>
+
 
 
 
