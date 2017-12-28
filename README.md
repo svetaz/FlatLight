@@ -4,7 +4,7 @@
 
 Apk link: https://app.box.com/v/flatlight
 
-![alt text](https://github.com/svetaz/FlatLight/flash.jpg)
+![alt text](https://github.com/svetaz/FlatLight/master/flash.jpg)
 
 
 
