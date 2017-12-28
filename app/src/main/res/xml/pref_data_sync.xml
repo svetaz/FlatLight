@@ -61,33 +61,6 @@
 
     </PreferenceCategory>
 
-
-
-
-        <PreferenceCategory
-            android:title="Screen">
-
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="notif_screen"
-        android:icon="@drawable/screen"
-       android:summary="maximize brightness and use white screen"
-        android:title="Use screen as flashlight" />
-
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="notif_on"
-        android:icon="@drawable/source"
-        android:summary="screen will never go to sleep while app is on"
-        android:title="Keep screen awake" />
-
-        </PreferenceCategory>
-
-
-
-
-
-
     <PreferenceCategory
         android:title="Motion"
         >
@@ -133,6 +106,35 @@
 
 
 
+    <PreferenceCategory
+            android:title="Screen">
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="notif_screen"
+        android:icon="@drawable/screen"
+       android:summary="maximize brightness and use white screen"
+        android:title="Use screen as flashlight" />
+
+
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="notif_on"
+        android:icon="@drawable/source"
+        android:summary="screen will never sleep while app is on"
+        android:title="Keep screen awake" />
+
+        </PreferenceCategory>
+
+
+
+
+
+
+
+
+
 
 
 
@@ -171,6 +173,14 @@
         <SwitchPreference
 
             android:defaultValue="false"
+            android:key="notif_kompas"
+            android:icon="@drawable/compas"
+
+            android:title="Show compass" />
+
+        <SwitchPreference
+
+            android:defaultValue="false"
             android:key="notif_notif"
             android:icon="@drawable/notif"
             android:summary="if notification is not shown please restart the app"
@@ -190,7 +200,9 @@
             android:key="notif_fullscreen"
             android:icon="@drawable/full"
 
-            android:title="Start app in fullscreen mode" />
+            android:title="Run app in fullscreen mode" />
+
+
 
 
 

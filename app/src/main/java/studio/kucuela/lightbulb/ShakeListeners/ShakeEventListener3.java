@@ -22,7 +22,7 @@ public class ShakeEventListener3 implements SensorEventListener {
 
 
     /** Minimum movement force to consider. */
-    private static final int MIN_FORCE = 27;
+    private static final int MIN_FORCE = 25;
 
     /**
      * Minimum times in a shake gesture that the direction of movement needs to

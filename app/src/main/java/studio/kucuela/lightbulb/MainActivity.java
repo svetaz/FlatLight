@@ -41,6 +41,12 @@ import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.jrummyapps.android.animations.Technique;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+
 
 
 
@@ -56,18 +62,16 @@ import studio.kucuela.lightbulb.ShakeListeners.ShakeEventListener3;
 
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,SensorEventListener {
 
 
     private SharedPreferences prefs;
-
-
-
-
     public static String NOTIF_AUTO = "notif_auto";
     public static String NOTIF_SOUND = "notif_sound";
     public static String NOTIF_STROBE = "notif_strobe";
     public static String NOTIF_SCREEN = "notif_screen";
+    public static String NOTIF_KOMPAS = "notif_kompas";
+
     public static String NOTIF_SHAKE = "notif_shake";
     public static String NOTIF_TIPS = "notif_tips";
     public static String NOTIF_ON = "notif_on";
@@ -75,20 +79,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static String NOTIF_NOTIF = "notif_notif";
 
 
-
     final Handler handler = new Handler();
-    Handler handler2 = new Handler();
-
+    final Handler handler2 = new Handler();
 
 
     private SensorManager mSensorManager;
     private ShakeEventListener mSensorListener;
-
     private SensorManager mSensorManager2;
     private ShakeEventListener2 mSensorListener2;
-
     private SensorManager mSensorManager3;
     private ShakeEventListener3 mSensorListener3;
+
+    // define the display assembly compass picture
+
+    private ImageView imageK;
+
+
+        // record the compass picture angle turned
+
+    private float currentDegree = 0f;
+
+
+
+        // device sensor manager
+
+    private SensorManager kSensorManager;
+
+
+
+
+
 
 
 
@@ -102,50 +122,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
 
-
-
-
-
-
-
-
-
-
-
-
-// ShakeDetector initialization
-        /*mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mAccelerometer = mSensorManager
-                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mShakeDetector = new ShakeDetector();
-        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
-
-            @Override
-            public void onShake(int count) {
-				*//*
-				 * The following method, "handleShakeEvent(count):" is a stub //
-				 * method you would use to setup whatever you want done once the
-				 * device has been shook.
-				 *//*
-                handleShakeEvent(count);
-            }
-        });*/
-
-
-            //PERMISSIONS
-
         ugasi();
         strobeoff();
-
-
-
-
-
-
-
-
-
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -161,11 +139,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageView mesecoff = (ImageView) findViewById(R.id.mesecoff);
         ImageView sunon = (ImageView) findViewById(R.id.sunon);
         ImageView sunoff = (ImageView) findViewById(R.id.sunoff);
-
-
         ConstraintLayout cl = (ConstraintLayout)findViewById(R.id.layout);
-
-
+        imageK = (ImageView) findViewById(R.id.imageKompas);
 
 
 
@@ -180,10 +155,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         boolean shake = prefs.getBoolean(NOTIF_SHAKE, false);
         boolean tips = prefs.getBoolean(NOTIF_TIPS, true);
         boolean on = prefs.getBoolean(NOTIF_ON, false);
+        boolean kompas = prefs.getBoolean(NOTIF_KOMPAS, false);
         boolean fullscreen = prefs.getBoolean(NOTIF_FULLSCREEN, false);
         boolean notification = prefs.getBoolean(NOTIF_NOTIF, false);
         String END_POINT = prefs.getString("PREF_LIST", "1");
         String PREF_LIST_SHAKE_SENSITIVITY = prefs.getString("PREF_LIST_SHAKE_SENSITIVITY", "2");
+
+        if (kompas){
+
+            kSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
+
+        }
 
         if (PREF_LIST_SHAKE_SENSITIVITY.matches("2")){
 
@@ -255,7 +238,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             final String[] r1 = new String[] {"Tip: You can change app's light source","Tip: You can start the app with lights on","Tip: Use your screen as second flashlight",
             "Tip: Turn on blinking lights for signaling","Tip: Shake your phone for various actions","Tip: Change light switch sounds",
-                    "Tip: Set your screen never to turn off","Tip: Display the app in fullscreen","Tip: Set ongoing notification and use it as shortcut"};
+                    "Tip: Set your screen never to turn off","Tip: Display the app in fullscreen","Tip: Set ongoing notification and use it as shortcut",
+                    "Tip: Turn on compass to find your way around"};
             final int randomMsgIndex = new Random().nextInt(r1.length);
 
             final Snackbar snackbar = Snackbar.make(cl,r1[randomMsgIndex], Snackbar.LENGTH_LONG);
@@ -297,6 +281,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         }
+
+
+
 
         if (END_POINT.matches("1")) {
 
@@ -483,8 +470,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
           if (id == R.id.nav_send) {
 
             new MaterialStyledDialog.Builder(this)
-                    .setTitle("About")
-                    .setDescription("• A simple material design app that uses phone flashlight\n• No ads!\n• Tried to keep it as minimal as possible,without any fancy buttons or useless options\n• There are 3 light source themes at the moment and i will try to add more in the future\n• Feel free to send me any kind of feedback,both positive and negative and tell me what features would you like to see in this app\n")
+                    .setDescription("This is a simple material design app that uses phone flashlight to fight the darkness.Its absolutely ad free,beautifully designed and rich with options.There are 3 light source themes at the moment and i will try to add more in the future.Feel free to send me any kind of feedback,both positive and negative and tell me what features would you like to see in this app.")
                     .setHeaderDrawable(R.drawable.nocka).withDialogAnimation(true)
                     .setIcon(R.mipmap.logo)
                     .setPositiveText("OK").onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -565,6 +551,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         boolean shake = prefs.getBoolean(NOTIF_SHAKE, false);
         boolean notification = prefs.getBoolean(NOTIF_NOTIF,false);
+        boolean kompas = prefs.getBoolean(NOTIF_KOMPAS, false);
         String PREF_LIST_SHAKE_SENSITIVITY = prefs.getString("PREF_LIST_SHAKE_SENSITIVITY", "2");
 
 
@@ -598,7 +585,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
+        if (kompas) {
 
+            imageK = (ImageView) findViewById(R.id.imageKompas);
+            imageK.setVisibility(View.VISIBLE);
+
+            kSensorManager.registerListener(this, kSensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION), SensorManager.SENSOR_DELAY_GAME);
+        }
 
 
 
@@ -612,7 +605,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             Intent i = new Intent(getApplicationContext(), MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), i, 0);
-            mBuilder.setContentTitle("Minimal Flashlight");
+            mBuilder.setContentTitle("Flatlight");
 
             mBuilder.setAutoCancel(false);
             mBuilder.setOngoing(true);
@@ -1234,40 +1227,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-
-
-
-            return true;
-        }
-
-
-
-
-        return super.onOptionsItemSelected(item);
-    }
-*/
-
-
-
-
-
     @Override
     public void onPause() {
 
@@ -1276,6 +1235,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //provera podesenja
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean shake = prefs.getBoolean(NOTIF_SHAKE, false);
+        boolean kompas = prefs.getBoolean(NOTIF_KOMPAS, false);
         String PREF_LIST_SHAKE_SENSITIVITY = prefs.getString("PREF_LIST_SHAKE_SENSITIVITY", "2");
 
 
@@ -1289,6 +1249,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (shake&&PREF_LIST_SHAKE_SENSITIVITY.matches("3")) {
             mSensorManager3.unregisterListener(mSensorListener3);
+        }
+
+        if (kompas){
+        kSensorManager.unregisterListener(this);
+
         }
 
 
@@ -1523,6 +1488,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ugasi();
         strobeoff();
         finishAffinity();
+
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+
+        float degree = Math.round(event.values[0]);
+        RotateAnimation ra = new RotateAnimation(
+
+                currentDegree,
+                        -degree,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF,
+        0.5f);
+        // how long the animation will take place
+                ra.setDuration(210);
+        // set the animation after the end of the reservation status
+                ra.setFillAfter(true);
+                // Start the animation
+               imageK.startAnimation(ra);
+               currentDegree = -degree;
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
 
