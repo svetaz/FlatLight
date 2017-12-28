@@ -31,19 +31,7 @@
 
     </string-array>
 
-    <string-array name="listentriesstrobe">
 
-        <item>Normal</item>
-        <item>A little bit faster</item>
-        <item>The fastest</item>
-
-
-    </string-array>
-    <string-array name="listvaluesstrobe">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
 
     <string-array name="listentriesshake">
 

@@ -19,7 +19,7 @@
         <ListPreference
             android:key="PREF_LIST"
             android:title="Light source"
-            android:icon="@drawable/bulb"
+            android:icon="@drawable/slika"
 
             android:summary="%s"
             android:entries="@array/listentries"
@@ -31,29 +31,9 @@
             android:key="notif_auto"
             android:icon="@drawable/flash"
 
+
             android:summary="start the app with lights on"
             android:title="Starting lights" />
-
-
-
-        <SwitchPreference
-
-            android:defaultValue="false"
-            android:key="notif_strobe"
-            android:icon="@drawable/blink"
-            android:summary="blinking lights will replace standard ones"
-
-            android:title="Use blinking (signal) lights" />
-
-        <ListPreference
-            android:key="PREF_LIST_STROBE"
-            android:title="Blinking rate"
-            android:icon="@drawable/speed"
-            android:dependency="notif_strobe"
-            android:summary="%s"
-            android:entries="@array/listentriesstrobe"
-            android:entryValues="@array/listvaluesstrobe"
-            android:defaultValue="1"/>
 
 
 
