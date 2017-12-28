@@ -34,6 +34,7 @@
         android:id="@+id/navText2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="12sp"
         android:text="Version 1.2"
         android:paddingBottom="10dp"/>
 

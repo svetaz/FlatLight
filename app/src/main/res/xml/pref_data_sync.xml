@@ -65,9 +65,7 @@
         android:title="Motion"
         >
 
-        <ListPreference
-            android:title="These options require accelerometer sensor"
-            android:enabled="false"/>
+
 
 
 
@@ -202,13 +200,12 @@
 
             android:title="Run app in fullscreen mode" />
 
-
-
-
-
-
-
     </PreferenceCategory>
+
+
+
+
+
 
 
 
