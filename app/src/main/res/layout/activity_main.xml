@@ -22,10 +22,10 @@
         android:layout_gravity="start"
 
         android:background="#242140"
-        app:itemTextColor="@color/whitedark"
-        app:itemIconTint="@color/whitedark"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_main"
+        app:itemIconTint="@color/whitedark"
+        app:itemTextColor="@color/whitedark"
 
         app:menu="@menu/activity_main_drawer"/>
 
