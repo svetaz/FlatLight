@@ -7,7 +7,7 @@
         <bitmap
             android:gravity="center"
 
-            android:src="@mipmap/ic_launcher_final"
+            android:src="@mipmap/ic_launcher_vector"
 
             />
     </item>
