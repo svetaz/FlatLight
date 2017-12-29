@@ -65,25 +65,16 @@ import studio.kucuela.lightbulb.ShakeListeners.ShakeEventListener3;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,SensorEventListener {
 
-
     private SharedPreferences prefs;
     public static String NOTIF_AUTO = "notif_auto";
     public static String NOTIF_SOUND = "notif_sound";
-
     public static String NOTIF_SCREEN = "notif_screen";
     public static String NOTIF_KOMPAS = "notif_kompas";
-
     public static String NOTIF_SHAKE = "notif_shake";
     public static String NOTIF_TIPS = "notif_tips";
     public static String NOTIF_ON = "notif_on";
     public static String NOTIF_FULLSCREEN = "notif_fullscreen";
     public static String NOTIF_NOTIF = "notif_notif";
-
-
-
-
-
-
 
     private SensorManager mSensorManager;
     private ShakeEventListener mSensorListener;
@@ -93,24 +84,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ShakeEventListener3 mSensorListener3;
 
     // define the display assembly compass picture
-
     private ImageView imageK;
-
-
         // record the compass picture angle turned
-
     private float currentDegree = 0f;
-
-
-
         // device sensor manager
-
     private SensorManager kSensorManager;
-
-
-
-
-
 
 
 
@@ -123,8 +101,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        ugasi();
+        //ugasi();
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -1367,7 +1344,52 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(bulboff);
                 if (screen==false){
                 ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-                lLayout.setBackgroundColor(Color.parseColor("#262545"));}}
+                lLayout.setBackgroundColor(Color.parseColor("#262545"));}
+
+                if (sound&&END_SOUNDS.matches("1")) {
+
+                    MediaPlayer mp;
+                    mp = MediaPlayer.create(MainActivity.this, R.raw.clicky);
+                    mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            // TODO Auto-generated method stub
+                            mp.reset();
+                            mp.release();
+                            mp = null;
+                        }
+
+                    });
+                    mp.start();
+                }
+
+                if (sound&&END_SOUNDS.matches("2")) {
+
+                    MediaPlayer mp;
+                    mp = MediaPlayer.create(MainActivity.this, R.raw.clicky);
+                    mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            // TODO Auto-generated method stub
+                            mp.reset();
+                            mp.release();
+                            mp = null;
+                        }
+
+                    });
+                    mp.start();
+
+
+
+
+
+
+                }
+
+
+            }
 
             if (mesecon.getVisibility() == View.VISIBLE) {
 
@@ -1382,10 +1404,58 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 sunon.setVisibility(View.INVISIBLE);
                 sunoff.setVisibility(View.INVISIBLE);
 
-                Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(mesecoff);
+                Technique.WAVE.getComposer().duration(650).delay(0).playOn(mesecoff);
                 if (screen==false){
                 ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-                lLayout.setBackgroundColor(Color.parseColor("#262545"));}}
+                lLayout.setBackgroundColor(Color.parseColor("#262545"));}
+
+
+                if (sound&&END_SOUNDS.matches("1")) {
+
+                    MediaPlayer mp;
+                    mp = MediaPlayer.create(MainActivity.this, R.raw.moon);
+                    mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            // TODO Auto-generated method stub
+                            mp.reset();
+                            mp.release();
+                            mp = null;
+                        }
+
+                    });
+                    mp.start();
+                }
+
+                if (sound&&END_SOUNDS.matches("2")) {
+
+                    MediaPlayer mp;
+                    mp = MediaPlayer.create(MainActivity.this, R.raw.clicky);
+                    mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            // TODO Auto-generated method stub
+                            mp.reset();
+                            mp.release();
+                            mp = null;
+                        }
+
+                    });
+                    mp.start();
+
+
+
+
+
+
+                }
+
+
+
+
+            }
 
             if (sunon.getVisibility() == View.VISIBLE) {
 
@@ -1400,10 +1470,58 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 sunon.setVisibility(View.INVISIBLE);
                 sunoff.setVisibility(View.VISIBLE);
 
-                Technique.BOUNCE.getComposer().duration(650).delay(0).playOn(sunoff);
+                Technique.ROTATE.getComposer().duration(650).delay(0).playOn(sunoff);
                 if (screen==false){
                 ConstraintLayout lLayout = (ConstraintLayout) findViewById(R.id.layout);
-                lLayout.setBackgroundColor(Color.parseColor("#262545"));}}
+                lLayout.setBackgroundColor(Color.parseColor("#262545"));}
+
+
+                if (sound&&END_SOUNDS.matches("1")) {
+
+                    MediaPlayer mp;
+                    mp = MediaPlayer.create(MainActivity.this, R.raw.sun);
+                    mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            // TODO Auto-generated method stub
+                            mp.reset();
+                            mp.release();
+                            mp = null;
+                        }
+
+                    });
+                    mp.start();
+                }
+
+                if (sound&&END_SOUNDS.matches("2")) {
+
+                    MediaPlayer mp;
+                    mp = MediaPlayer.create(MainActivity.this, R.raw.clicky);
+                    mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            // TODO Auto-generated method stub
+                            mp.reset();
+                            mp.release();
+                            mp = null;
+                        }
+
+                    });
+                    mp.start();
+
+
+
+
+
+
+                }
+
+
+
+
+            }
 
 
 

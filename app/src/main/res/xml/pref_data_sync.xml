@@ -19,7 +19,7 @@
         <ListPreference
             android:key="PREF_LIST"
             android:title="Light source"
-            android:icon="@drawable/slika"
+            android:icon="@drawable/slika2"
 
             android:summary="%s"
             android:entries="@array/listentries"
@@ -29,7 +29,7 @@
         <SwitchPreference
             android:defaultValue="false"
             android:key="notif_auto"
-            android:icon="@drawable/flash"
+            android:icon="@drawable/flash2"
 
 
             android:summary="start the app with lights on"
@@ -54,14 +54,14 @@
 
             android:defaultValue="false"
             android:key="notif_shake"
-            android:icon="@drawable/shake"
+            android:icon="@drawable/shake2"
 
             android:title="Shake phone for action" />
 
         <ListPreference
             android:key="PREF_LIST_SHAKE"
-            android:title="Choose action (while in app)"
-            android:icon="@drawable/a"
+            android:title="Choose action"
+            android:icon="@drawable/hand"
             android:summary="%s"
             android:dependency="notif_shake"
             android:entries="@array/listentriesshake"

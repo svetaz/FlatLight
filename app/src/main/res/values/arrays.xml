@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="listentries">
-        <item>Light Bulb</item>
-        <item>The Sun</item>
-               <item>The Moon</item>
+        <item>Good Old Light Bulb</item>
+        <item>The Center of Our Solar System</item>
+               <item>Earth`s first neighbor</item>
 
 
     </string-array>
@@ -35,8 +35,8 @@
 
     <string-array name="listentriesshake">
 
-        <item>Turn on the light</item>
-        <item>Turn off the light</item>
+        <item>Turn on the light while in app</item>
+        <item>Turn off the light while in app</item>
         <item>Turn off the light and close the app</item>
         <item>Open settings</item>
 
@@ -52,9 +52,9 @@
 
     <string-array name="listentriesshakesensitivity">
 
-        <item>Low</item>
-        <item>Normal</item>
-        <item>High</item>
+        <item>Low (shake it strong)</item>
+        <item>Normal (shake it as usual)</item>
+        <item>High (shake it easy)</item>
 
 
 
