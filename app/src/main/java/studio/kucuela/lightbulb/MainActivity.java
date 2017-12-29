@@ -90,8 +90,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // device sensor manager
     private SensorManager kSensorManager;
 
-
-
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +100,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
         //ugasi();
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -121,19 +118,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ConstraintLayout cl = (ConstraintLayout)findViewById(R.id.layout);
         imageK = (ImageView) findViewById(R.id.imageKompas);
 
-
-
-
-
-
-
-
-
         //provera podesenja
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean auto = prefs.getBoolean(NOTIF_AUTO, false);
         boolean sound = prefs.getBoolean(NOTIF_SOUND, true);
-
         boolean screen = prefs.getBoolean(NOTIF_SCREEN, false);
         boolean shake = prefs.getBoolean(NOTIF_SHAKE, false);
         boolean tips = prefs.getBoolean(NOTIF_TIPS, true);
@@ -147,8 +135,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (kompas){
 
             kSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-
-
         }
 
         if (PREF_LIST_SHAKE_SENSITIVITY.matches("2")){
@@ -200,9 +186,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
-
-
-
         if(on){
 
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -217,21 +200,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (tips){
 
-
-
             final String[] r1 = new String[] {"Tip: You can change app's light source","Tip: You can start the app with lights on","Tip: Use your screen as second flashlight",
             "Tip: Shake your phone for various actions","Tip: Change light switch sounds",
                     "Tip: Set your screen never to turn off","Tip: Display the app in fullscreen","Tip: Set ongoing notification and use it as shortcut",
                     "Tip: Turn on compass to find your way around"};
             final int randomMsgIndex = new Random().nextInt(r1.length);
-
             final Snackbar snackbar = Snackbar.make(cl,r1[randomMsgIndex], Snackbar.LENGTH_LONG);
-
             // Set an action on it, and a handler
             snackbar.setAction("TURN OFF HELP", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
 
                     SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit();
                     prefs.putBoolean("notif_tips", false);
@@ -240,14 +218,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 }
             });
-
-
-
-
             snackbar.show();
-
-
-
         }
 
 
@@ -362,10 +333,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
-
-
-
-
     }
 
 
@@ -381,13 +348,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawer.closeDrawer(GravityCompat.START);
         } else {
 
-
-
-
-
             finishAffinity();
-
-
 
         }
     }
