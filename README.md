@@ -5,12 +5,7 @@ This is a simple material design app that uses phone flashlight to fight the dar
 Min SDK 23/Android 6.0(M)
 
 Apk link: https://app.box.com/v/flatlight
-![title](https://i.imgur.com/44JGIaP.jpg)
-![title](https://i.imgur.com/Or1Gb8B.jpg)
-![title](https://i.imgur.com/dY6GKdd.jpg)
-![title](https://i.imgur.com/hFeFgLw.jpg)
-![title](https://i.imgur.com/AGIYWvG.jpg)
-![title](https://i.imgur.com/MsvH5b4.jpg)
+![title](https://i.imgur.com/9smJM1G.png)
 
 
 
