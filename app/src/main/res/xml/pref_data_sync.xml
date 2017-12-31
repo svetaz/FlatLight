@@ -1,5 +1,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:recycleEnabled="true">
+    android:recycleEnabled="true"
+    >
 
     <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
          dismiss it. -->
@@ -140,7 +141,7 @@
             android:dependency="notif_sound"
             android:entries="@array/listentriessounds"
             android:entryValues="@array/listvaluessounds"
-            android:defaultValue="1"/>
+            android:defaultValue="2"/>
     </PreferenceCategory>
 
 
@@ -156,13 +157,13 @@
 
             android:title="Show compass" />
 
-        <SwitchPreference
+       <!-- <SwitchPreference
 
             android:defaultValue="false"
             android:key="notif_notif"
             android:icon="@drawable/notif"
-            android:summary="if notification is not shown please restart the app"
-            android:title="Show ongoing notification" />
+            android:summary="on some devices system will display its own notification card as well as FlatLight's one"
+            android:title="Show ongoing notification" />-->
 
         <SwitchPreference
 
@@ -179,6 +180,8 @@
             android:icon="@drawable/full"
 
             android:title="Run app in fullscreen mode" />
+
+
 
     </PreferenceCategory>
 

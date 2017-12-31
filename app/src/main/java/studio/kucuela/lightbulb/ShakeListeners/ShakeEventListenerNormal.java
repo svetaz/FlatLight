@@ -16,13 +16,13 @@ import android.preference.PreferenceManager;
 /**
  * Listener that detects shake gesture.
  */
-public class ShakeEventListener implements SensorEventListener {
+public class ShakeEventListenerNormal implements SensorEventListener {
 
 
 
 
     /** Minimum movement force to consider. */
-    private static final int MIN_FORCE = 35;
+    private static final int MIN_FORCE = 30;
 
     /**
      * Minimum times in a shake gesture that the direction of movement needs to
