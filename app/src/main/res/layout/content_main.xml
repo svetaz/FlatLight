@@ -95,8 +95,8 @@
 
     <ImageView
         android:id="@+id/imageKompas"
-        android:layout_width="185dp"
-        android:layout_height="185dp"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
         android:src="@drawable/kompas"
         android:visibility="invisible"
 

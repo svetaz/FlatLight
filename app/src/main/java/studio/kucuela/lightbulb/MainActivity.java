@@ -340,15 +340,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
           if (id == R.id.nav_send) {
 
             new MaterialStyledDialog.Builder(this)
-                    .setDescription("•FlatLight is a simple material design app that uses phone flashlight to fight the darkness.Its " +
+                    .setDescription("• FlatLight is a simple material design app that uses phone flashlight to fight the darkness.Its " +
                             "absolutely ad free,beautifully designed and rich with options.There are 3 light source themes at the moment and i will " +
                             "try to add more in the future.Feel free to send me any kind of feedback,both positive and negative and tell me what " +
-                            ("features would you like to see in the future.\n\n•Icons/art credits:\nwww.freepik.com\n\n•Used libraries:\ncom" +
-                                    ".android.support:appcompat-v7:26.1.0\n\ncom.android.support:design:26.1.0\n\ncom.android.support" +
-                                    ".constraint:constraint-layout:1.0.2\n\njunit:junit:4.12\ncom.android.support.test:runner:1.0.1\n\ncom.android.support" +
-                                    ".test.espresso:espresso-core:3.0.1\n\ncom.jaredrummler:android-animations:1.0.0\n\ncom.github.javiersantos:" +
-                                    "MaterialStyledDialogs:2.1\n\ncom.android.support:cardview-v7:26.1.0\n\ncom.android.support:recyclerview-v7:26.1.0\n\n" +
-                                    "com.android.support:support-annotations:26.1.0"))
+                            ("features would you like to see in the future.\n\n• Icons/art credits:\nwww.freepik.com\n\n• Used libraries:\n\n-com" +
+                                    ".android.support:appcompat-v7:26.1.0\n\n-com.android.support:design:26.1.0\n\n-com.android.support" +
+                                    ".constraint:constraint-layout:1.0.2\n\n-junit:junit:4.12\n\n-com.android.support.test:runner:1.0.1\n\n-com" +
+                                    ".android.support" +
+                                    ".test.espresso:espresso-core:3.0.1\n\n-com.jaredrummler:android-animations:1.0.0\n\n-com.github.javiersantos:" +
+                                    "MaterialStyledDialogs:2.1\n\n-com.android.support:cardview-v7:26.1.0\n\n-com.android" +
+                                    ".support:recyclerview-v7:26.1.0\n\n" +
+                                    "-com.android.support:support-annotations:26.1.0"))
                     .setHeaderDrawable(R.drawable.mainx).withDialogAnimation(true)
                     .setScrollable(true)
                     .setScrollable(true, 16)
@@ -389,7 +391,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "Download FlatLight app from https://app.box.com/v/flatlight");
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "Checkout this beautifully designed app: https://app.box.com/v/flatlight");
             sendIntent.setType("text/plain");
             startActivity(sendIntent);
 
