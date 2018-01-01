@@ -42,8 +42,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.jrummyapps.android.animations.Technique;
-import com.mikepenz.aboutlibraries.Libs;
-import com.mikepenz.aboutlibraries.LibsBuilder;
+
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.view.animation.Animation;
@@ -55,6 +54,9 @@ import studio.kucuela.lightbulb.ShakeListeners.ShakeEventListenerNormal;
 import studio.kucuela.lightbulb.ShakeListeners.ShakeEventListenerLow;
 import studio.kucuela.lightbulb.ShakeListeners.ShakeEventListenerSensitive;
 
+import static android.widget.ImageView.ScaleType.CENTER_CROP;
+import static android.widget.ImageView.ScaleType.CENTER_INSIDE;
+import static android.widget.ImageView.ScaleType.FIT_CENTER;
 import static java.security.AccessController.getContext;
 
 
@@ -320,7 +322,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onDestroy() {
 
-        getPermission();
+        ugasi();
 
 
         super.onDestroy();
@@ -338,8 +340,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
           if (id == R.id.nav_send) {
 
             new MaterialStyledDialog.Builder(this)
-                    .setDescription("This is a simple material design app that uses phone flashlight to fight the darkness.Its absolutely ad free,beautifully designed and rich with options.There are 3 light source themes at the moment and i will try to add more in the future.Feel free to send me any kind of feedback,both positive and negative and tell me what features would you like to see in the future.")
+                    .setDescription("•FlatLight is a simple material design app that uses phone flashlight to fight the darkness.Its " +
+                            "absolutely ad free,beautifully designed and rich with options.There are 3 light source themes at the moment and i will " +
+                            "try to add more in the future.Feel free to send me any kind of feedback,both positive and negative and tell me what " +
+                            ("features would you like to see in the future.\n\n•Icons/art credits:\nwww.freepik.com\n\n•Used libraries:\ncom" +
+                                    ".android.support:appcompat-v7:26.1.0\n\ncom.android.support:design:26.1.0\n\ncom.android.support" +
+                                    ".constraint:constraint-layout:1.0.2\n\njunit:junit:4.12\ncom.android.support.test:runner:1.0.1\n\ncom.android.support" +
+                                    ".test.espresso:espresso-core:3.0.1\n\ncom.jaredrummler:android-animations:1.0.0\n\ncom.github.javiersantos:" +
+                                    "MaterialStyledDialogs:2.1\n\ncom.android.support:cardview-v7:26.1.0\n\ncom.android.support:recyclerview-v7:26.1.0\n\n" +
+                                    "com.android.support:support-annotations:26.1.0"))
                     .setHeaderDrawable(R.drawable.mainx).withDialogAnimation(true)
+                    .setScrollable(true)
+                    .setScrollable(true, 16)
 
                     .setPositiveText("OK").onPositive(new MaterialDialog.SingleButtonCallback() {
 
@@ -349,15 +361,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     dialog.dismiss();
                 }
             })
-                    .setNeutralText("OPEN SOURCE LIBRARIES").onNeutral(new MaterialDialog.SingleButtonCallback() {
+                    .setNeutralText("GITHUB").onNeutral(new MaterialDialog.SingleButtonCallback() {
                 @Override
                 public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 
-                            new LibsBuilder()
-                            //provide a style (optional) (LIGHT, DARK, LIGHT_DARK_TOOLBAR)
-                            .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
-                            //start the activity
-                            .start(MainActivity.this);
+                    String url = "https://github.com/svetaz/FlatLight";
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
                 }
             })
 
@@ -468,28 +479,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //METODE ZA PALJENJE I GASENJE BLICA
     public void upali() {
 
+        if (getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)==true) {
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                CameraManager camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-             CameraManager camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+                String cameraId = null; // Usually back camera is at 0 position.
+                try {
+                    cameraId = camManager.getCameraIdList()[0];
+                    camManager.setTorchMode(cameraId, true);   //Turn ON
+                    flashState = true;
 
-            String cameraId = null; // Usually back camera is at 0 position.
-            try {
-                cameraId = camManager.getCameraIdList()[0];
-                camManager.setTorchMode(cameraId, true);   //Turn ON
-                flashState=true;
+                } catch (CameraAccessException e) {
+                    e.printStackTrace();
 
-            } catch (CameraAccessException e) {
-                e.printStackTrace();
+                }
+
 
             }
-
-
         }
 
+        if (getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)==false) {
 
 
+            ConstraintLayout cl = (ConstraintLayout) findViewById(R.id.layout);
+            final Snackbar snackbar = Snackbar.make(cl, "Flashlight not found on phone.You can use screen as flashlight.", Snackbar
+                    .LENGTH_INDEFINITE);
+            snackbar.setAction("SETTINGS", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                    startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+
+                }
+            });
+            snackbar.show();
+
+        }
 
 
 
@@ -500,17 +526,66 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void ugasi() {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            CameraManager camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-            String cameraId = null; // Usually back camera is at 0 position.
-            try {
-                cameraId = camManager.getCameraIdList()[0];
-                camManager.setTorchMode(cameraId, false);   //Turn Off
-                flashState=false;
 
-            } catch (CameraAccessException e) {
-                e.printStackTrace();
+        if (getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)==true) {
+
+
+            PackageManager pm = getBaseContext().getPackageManager();
+            int hasPerm = pm.checkPermission(Manifest.permission.CAMERA, getBaseContext().getPackageName());
+
+            if (hasPerm == PackageManager.PERMISSION_GRANTED) {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    CameraManager camManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+                    String cameraId = null; // Usually back camera is at 0 position.
+                    try {
+                        cameraId = camManager.getCameraIdList()[0];
+                        camManager.setTorchMode(cameraId, false);   //Turn Off
+                        flashState = false;
+
+                    } catch (CameraAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
+
+            if (hasPerm == PackageManager.PERMISSION_DENIED) {
+
+
+                ConstraintLayout cl = (ConstraintLayout) findViewById(R.id.layout);
+                final Snackbar snackbar = Snackbar.make(cl, "Please grant camera permission to FlatLight", Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction("PERMISSIONS", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        Intent intent = new Intent();
+                        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", getPackageName(), null);
+                        intent.setData(uri);
+                        startActivity(intent);
+
+                    }
+                });
+                snackbar.show();
+
+            }
+        }
+
+        if (getBaseContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH)==false) {
+
+
+            ConstraintLayout cl = (ConstraintLayout) findViewById(R.id.layout);
+            final Snackbar snackbar = Snackbar.make(cl, "Flashlight not found on phone.You can use screen as flashlight.", Snackbar.LENGTH_INDEFINITE);
+            snackbar.setAction("SETTINGS", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+
+                }
+            });
+            snackbar.show();
+
         }
 
 
@@ -604,7 +679,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
-            getPermission();
+            ugasi();
+
 
 
         ImageView bulbon = (ImageView) findViewById(R.id.bulbON);
@@ -676,7 +752,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
-           getPermission();
+            ugasi();
 
 
 
@@ -825,7 +901,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
 
-           getPermission();
+            ugasi();
 
 
 
@@ -1183,7 +1259,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             if (bulbon.getVisibility() == View.VISIBLE) {
 
-                getPermission();
+                ugasi();
 
                 bulboff.setVisibility(View.VISIBLE);
                 bulbon.setVisibility(View.INVISIBLE);
@@ -1246,7 +1322,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             if (mesecon.getVisibility() == View.VISIBLE) {
 
-                getPermission();
+                ugasi();
 
                 bulboff.setVisibility(View.INVISIBLE);
                 bulbon.setVisibility(View.INVISIBLE);
@@ -1312,7 +1388,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             if (sunon.getVisibility() == View.VISIBLE) {
 
-                getPermission();
+                ugasi();
 
                 bulboff.setVisibility(View.INVISIBLE);
                 bulbon.setVisibility(View.INVISIBLE);
@@ -1384,7 +1460,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void ubijsve(){
 
-        getPermission();
+        ugasi();
         finishAffinity();
 
     }
@@ -1510,6 +1586,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void getPermission (){
 
         PackageManager pm = getBaseContext().getPackageManager();
+
         int hasPerm = pm.checkPermission(
                 Manifest.permission.CAMERA,
                 getBaseContext().getPackageName());
@@ -1539,6 +1616,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
     }
+
+
 
 
 
