@@ -77,11 +77,11 @@ public class ShakeEventListenerNormal implements SensorEventListener {
     public void onSensorChanged(SensorEvent se) {
         // get sensor data
         float x = se.values[SensorManager.DATA_X];
-        float y = se.values[SensorManager.DATA_Y];
-        float z = se.values[SensorManager.DATA_Z];
+        //float y = se.values[SensorManager.DATA_Y];
+        //float z = se.values[SensorManager.DATA_Z];
 
         // calculate movement
-        float totalMovement = Math.abs(x + y + z - lastX - lastY - lastZ);
+        float totalMovement = Math.abs(x - lastX - lastY - lastZ);
 
         if (totalMovement > MIN_FORCE) {
 
@@ -104,8 +104,8 @@ public class ShakeEventListenerNormal implements SensorEventListener {
 
                 // store last sensor data
                 lastX = x;
-                lastY = y;
-                lastZ = z;
+                //lastY = y;
+                //lastZ = z;
 
                 // check how many movements are so far
                 if (mDirectionChangeCount >= MIN_DIRECTION_CHANGE) {
@@ -132,8 +132,8 @@ public class ShakeEventListenerNormal implements SensorEventListener {
         mDirectionChangeCount = 0;
         mLastDirectionChangeTime = 0;
         lastX = 0;
-        lastY = 0;
-        lastZ = 0;
+       // lastY = 0;
+        //lastZ = 0;
     }
 
     @Override
